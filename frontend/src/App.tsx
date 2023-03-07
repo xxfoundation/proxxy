@@ -1,8 +1,9 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import { Container, Box, Stack, Button, Typography, styled } from '@mui/material';
+import { Container, Box, Stack, Button, TextField, Typography, styled } from '@mui/material';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import icon from '../assets/icon.svg';
 import { useCallback, useState } from 'react';
+import useInput from './hooks/useInput';
 import './App.css';
 import Loading from './loading';
 import { StopCircle } from '@mui/icons-material';
@@ -28,13 +29,14 @@ interface Response {
 }
 
 function Hello() {
+  const [password, setPassword, setPasswordValue] = useInput('');
   const [connecting, setConnecting] = useState<Connection>('off');
   const [networks, setNetworks] = useState<string[]>([]);
   console.log(window);
   const connect = useCallback(
     () => {
       setConnecting('connecting');
-      global.astilectron.sendMessage({name: 'connect'}, (resp: Response) => {
+      global.astilectron.sendMessage({name: 'connect', payload: password}, (resp: Response) => {
         setNetworks(resp.payload as string[]);
         setConnecting('on');
       });
@@ -44,22 +46,35 @@ function Hello() {
   const disconnect = useCallback(
     () => {
       global.astilectron.sendMessage({name: 'disconnect'}, () => {
+        setPasswordValue('');
         setConnecting('off');
       });
     },
-  [setConnecting, setNetworks]);
+  [setConnecting, setNetworks, setPasswordValue]);
 
   return (
     <Container>
       <Stack alignItems={"center"}>
         <Box paddingTop={2} paddingBottom={4}><img width="200" alt="icon" src={icon}/></Box>
-        { connecting === 'off' ? <RoundedButton variant={'contained'} onClick={connect}>
-          <Stack direction={"row"} spacing={1}>
-            <Typography variant='h6'>Start Proxy</Typography>
-            <PlayCircleIcon fontSize={'large'}/>
-          </Stack>
-        </RoundedButton>
-        : connecting === 'connecting' ?
+        { connecting === 'off' ? (
+            <Stack alignItems={"center"} spacing={2}>
+              <Box>
+                <TextField
+                  type='password'
+                  label='Password'
+                  size='small'
+                  value={password}
+                  onChange={setPassword}
+                />
+              </Box>
+              <RoundedButton variant={'contained'} onClick={connect}>
+                <Stack direction={"row"} spacing={1}>
+                  <Typography variant='h6'>Start Proxy</Typography>
+                  <PlayCircleIcon fontSize={'large'}/>
+                </Stack>
+              </RoundedButton>
+            </Stack>
+        ): connecting === 'connecting' ?
           <Stack alignItems={"center"} spacing={2}>
             <Typography variant='h6'>Connecting to cMix</Typography>
             <Loading size='md'/>
