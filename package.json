@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@electron/remote": "^2.0.9",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/styles": "^5.11.12"
+  }
+}
