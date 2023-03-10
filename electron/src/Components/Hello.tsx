@@ -41,7 +41,12 @@ export const Hello = () => {
   }, []);
 
   return (
-    <Container sx={{ width: '350px' }}>
+    <Container sx={{ 
+      width: '350px',
+      maxWidth: '400px',
+      maxHeight: '800px',
+      overflowY: 'auto'
+    }}>
       <Stack alignItems={"center"}>
         <Box paddingTop={2} paddingBottom={4}><img width="200" alt="icon" src={icon}/></Box>
         <CustomizedSteppers steps={steps} activeStep={step} />

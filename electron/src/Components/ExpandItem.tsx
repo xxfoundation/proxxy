@@ -24,7 +24,7 @@ const ExpandItem: React.FC<Props> = ({ title, children }) => {
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItemButton>
       <Collapse in={expanded} timeout="auto" unmountOnExit sx={{ 
-        maxHeight: '200px', overflowY: 'scroll', textAlign: "justify", pb: 1, px: 1, borderRadius: '0 0 10px 10px',
+        maxHeight: '150px', overflowY: 'scroll', textAlign: "justify", pb: 1, px: 1, borderRadius: '0 0 10px 10px',
         backgroundImage: `linear-gradient(to bottom, #242424,#242424,#242424,#242424,#242424,#242424,#242424,#242424,#242424,#4f4f4f)`
       }}>
         {children}
