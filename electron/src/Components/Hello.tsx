@@ -1,8 +1,6 @@
-import { Alert, Box, Button, Container, Stack, styled, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import icon from '../assets/icon.svg';
-import useToggle from "../hooks/useToggle";
 import CustomizedSteppers from "./Stepper";
-import { theme } from "../theme";
 import { ConnectCmix } from "../Steps/ConnectCmix";
 import { useCallback, useState } from "react";
 import ExpandItem from "./ExpandItem";
@@ -25,12 +23,11 @@ const thread = (
 );
 
 export const Hello = () => {
-  const steps = ['Connect to cMix', 'Select Networks'];
-  const [expandInformation, information] = useToggle();
+  const steps = ['Connect to cMix'];
   const [step, setStep] = useState(0);
 
   const next = useCallback(() => {
-    setStep((v) => Math.min(steps.length - 1, v + 1));
+    setStep((v) => Math.min(steps.length, v + 1));
   }, []);
 
   const back = useCallback(() => {
@@ -47,13 +44,13 @@ export const Hello = () => {
       maxHeight: '800px',
       overflowY: 'auto'
     }}>
-      <Stack alignItems={"center"}>
-        <Box paddingTop={2} paddingBottom={4}><img width="200" alt="icon" src={icon}/></Box>
-        <CustomizedSteppers steps={steps} activeStep={step} />
+      <Stack alignItems={"center"} spacing={4}>
+        <Box paddingTop={1}><img width="200" alt="icon" src={icon}/></Box>
+        {/* <CustomizedSteppers steps={steps} activeStep={step} /> */}
         <ConnectCmix back={back} next={next} />
-      </Stack>
-      <Stack sx={{ maxWidth: '400px' }}>
-        <ExpandItem title={'More Information'} children={thread}/>
+        <Stack sx={{ maxWidth: '400px' }}>
+          <ExpandItem title={'More Information'} children={thread}/>
+        </Stack>
       </Stack>
     </Container>
   );

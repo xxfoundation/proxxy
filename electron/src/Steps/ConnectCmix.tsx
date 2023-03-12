@@ -34,13 +34,28 @@ interface Props {
   next: () => void;
 }
 
-const connected = (
-  <Stack direction='row' spacing={1}>
-    <Box sx={{ fontSize: '10px' }}><span>&#128994;</span></Box>
-    <Typography variant='h5' sx={{ color: theme.palette.primary.main }}> 
-      Connected!
-    </Typography>
-  </Stack>
+interface PropsConnection {
+  connection: Connection;
+}
+
+const connectToCmix = ({connection}: PropsConnection) => (
+  <>
+  { connection === 'on' ?
+    <Stack direction='row' spacing={1} width={'100%'}>
+      <Box sx={{ fontSize: '10px' }}><span>&#128994;</span></Box>
+      <Typography variant='h5' sx={{ color: theme.palette.primary.main }}> 
+        Connected!
+      </Typography>
+    </Stack>
+    :
+    <Stack direction='row' spacing={1} width={'100%'}>
+      <Box sx={{ fontSize: '10px' }}><span>&#128308;</span></Box>
+      <Typography variant='h5' sx={{ color: theme.palette.primary.main }}>
+        Connect to cmix
+      </Typography>
+    </Stack>
+  }
+  </>
 );
 
 export const ConnectCmix = ({ back, next }: Props) => {
@@ -51,37 +66,42 @@ export const ConnectCmix = ({ back, next }: Props) => {
     const connect = useCallback(
         () => {
         setConnecting('connecting');
+        process.env.NODE_ENV !== 'production' ? 
         setTimeout(() => {
           setNetworks(['ethereum', 'polygon']);
           setConnecting('on');
           next();
-        }, 1000);
-        // global.astilectron.sendMessage({name: 'connect', payload: password}, (resp: Response) => {
-        //     setNetworks(resp.payload as string[]);
-        //     setConnecting('on');
-        //     onResponse();
-        // });
+        }, 1000)
+        : global.astilectron.sendMessage({name: 'connect', payload: password}, (resp: Response) => {
+            setNetworks(resp.payload as string[]);
+            setConnecting('on');
+            next();
+        })
         },
     [setConnecting, setNetworks]);
 
     const disconnect = useCallback(
         () => {
-        // global.astilectron.sendMessage({name: 'disconnect'}, () => {
-        //     setPasswordValue('');
-        //     setConnecting('off');
-        // });
-        setTimeout(() => {
-          setPasswordValue('');
-          setConnecting('off');
-          back();
-        }, 1000);
+        process.env.NODE_ENV !== 'production' ?  
+          setTimeout(() => {
+            setPasswordValue('');
+            setConnecting('off');
+            back();
+          }, 1000)
+        : global.astilectron.sendMessage({name: 'disconnect'}, () => {
+              setPasswordValue('');
+              setConnecting('off');
+              back();
+          })
         },
     [setConnecting, setNetworks, setPasswordValue]);
     
+    
     return (
-        <Stack alignItems={"center"} sx ={{ m: 5 }}>
+        <Stack alignItems={"center"}>
           { connecting === 'off' ? (
               <Stack alignItems={"center"} spacing={4}>
+                {connectToCmix({connection: connecting})}
                 <Box>
                   <TextField
                     type='password'
@@ -99,12 +119,12 @@ export const ConnectCmix = ({ back, next }: Props) => {
               </Stack>
           ): connecting === 'connecting' ?
             <Stack alignItems={"center"} spacing={2}>
-              <Typography variant='body3' sx={{ color: theme.palette.text.secondary }}>Connecting to cMix</Typography>
+              <Typography variant='body3' sx={{ color: theme.palette.text.primary }}>Connecting to cMix</Typography>
               <Loading size='md'/>
             </Stack>
             :
-            <Stack alignItems={"center"} spacing={4}>
-              {connected}
+            <Stack alignItems={"center"} spacing={3}>
+              {connectToCmix({connection: connecting})}
               <Networks networks={networks}/>
               <RoundedButton variant={'contained'} onClick={disconnect}>
                 <Stack sx={{ alignItems: 'center' }} direction={"column"} spacing={1}>
