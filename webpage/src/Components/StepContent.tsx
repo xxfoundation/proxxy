@@ -2,7 +2,7 @@ import { Button, Stack, Typography } from '@mui/material'
 import { useCallback, useState } from 'react'
 import { CheckCmixConnection, Connection } from '../Steps/CheckCmixConnection'
 import { ConnectWallet } from '../Steps/ConnectWallet'
-import { ConnectNetworks } from '../Steps/ConnectNetworks'
+import { SelectNetworks } from '../Steps/SelectNetworks'
 import { theme } from '../theme'
 import { DownloadApp } from '../Steps/DownloadApp'
 
@@ -57,7 +57,7 @@ export const StepContent = ({ step, maxSteps, next, back }: Props) => {
         />
       )}
       {step === 2 && <ConnectWallet setWalletConnected={setWalletConnected} />}
-      {step >= 3 && <ConnectNetworks next={next} />}
+      {step >= 3 && <SelectNetworks next={next} />}
       {!restartButtonDisplay(step) ? (
         <Stack
           direction={'row'}

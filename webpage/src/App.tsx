@@ -13,7 +13,7 @@ function App() {
           overflowY: 'auto',
         }}
       >
-        <Box>
+        <Box margin={2}>
           <img width='200' alt='icon' src={icon} />
         </Box>
         <Hello />

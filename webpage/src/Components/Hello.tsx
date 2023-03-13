@@ -44,10 +44,10 @@ const thread = (
 
 export const Hello = () => {
   const steps = [
-    'Download App',
-    'Connect to App',
-    'Connect to Wallet',
-    'Connect to Network',
+    'Download Proxxy App',
+    'Connect Proxxy',
+    'Connect Wallet',
+    'Select Network',
   ]
   const [step, setStep] = useState<number>(0)
 

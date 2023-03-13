@@ -10,10 +10,37 @@ import {
 } from '@mui/material'
 import { theme } from '../theme'
 import { Network } from '../Utils/utils'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
 import SyncIcon from '@mui/icons-material/Sync'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useCallback, useEffect, useState } from 'react'
+
+interface SpinningProps {
+  flag: boolean
+}
+
+const SpinningSyncIcon = ({ flag }: SpinningProps) => {
+  return (
+    <>
+      {flag ? (
+        <SyncIcon
+          sx={{
+            animation: 'spin 2s linear infinite',
+            '@keyframes spin': {
+              '0%': {
+                transform: 'rotate(360deg)',
+              },
+              '100%': {
+                transform: 'rotate(0deg)',
+              },
+            },
+          }}
+        />
+      ) : (
+        <SyncIcon />
+      )}
+    </>
+  )
+}
 
 const baseRPC = 'http://localhost:9296'
 const baseNetworkName = '(Proxxy) '
@@ -35,54 +62,55 @@ const networks: Network[] = [
   },
 ]
 
-const addCustomNetwork = async (network: Network) => {
-  try {
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: `0x${network.chainId.toString(16)}` }],
-    })
-  } catch (switchError: any) {
-    // This error code indicates that the chain has not been added to MetaMask.
-    if (switchError.code === 4902) {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: `0x${network.chainId.toString(16)}`,
-              chainName: `${baseNetworkName}${network.name}`,
-              nativeCurrency: {
-                name: network.symbol,
-                symbol: network.symbol,
-                decimals: 18,
-              },
-              rpcUrls: [network.rpc],
-            },
-          ],
-        })
-      } catch (addError) {
-        // handle "add" error
-        console.error('Could not add network to MetaMask', addError)
-      }
-    }
-    // handle other "switch" errors
-    console.error('Could not switch to network in MetaMask', switchError)
-  }
+const checkConnectedNetwork = async () => {
+  const chainId = await window.ethereum.request({
+    method: 'eth_chainId',
+  })
+  console.log(chainId)
+  return networks.find((network) => network.chainId === parseInt(chainId))
 }
 
 interface Props {
   next: () => void
 }
 
-export const ConnectNetworks = ({ next }: Props) => {
+export const SelectNetworks = ({ next }: Props) => {
   const [networkAdded, setNetworkAdded] = useState<string | undefined>(
     undefined,
   )
+  const [loadingNetwork, setLoadingNetwork] = useState<string | undefined>(
+    undefined,
+  )
+  const addCustomNetwork = async (network: Network) => {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: `0x${network.chainId.toString(16)}`,
+            chainName: `${baseNetworkName}${network.name}`,
+            nativeCurrency: {
+              name: network.symbol,
+              symbol: network.symbol,
+              decimals: 18,
+            },
+            rpcUrls: [network.rpc],
+          },
+        ],
+      })
+    } catch (addError) {
+      console.error('Could not add network to MetaMask', addError)
+    }
+  }
 
   const addNetwork = useCallback(async (network: Network) => {
     try {
-      await addCustomNetwork(network)
-      setNetworkAdded(network.name)
+      setLoadingNetwork(network.name)
+      const retval = await addCustomNetwork(network)
+      setLoadingNetwork(undefined)
+      retval === null
+        ? setNetworkAdded(network.name)
+        : setNetworkAdded(undefined)
     } catch (error) {
       console.error(`Error adding ${network.name} to MetaMask`, error)
       setNetworkAdded(undefined)
@@ -90,11 +118,18 @@ export const ConnectNetworks = ({ next }: Props) => {
   }, [])
 
   useEffect(() => {
+    console.log(loadingNetwork)
+    checkConnectedNetwork().then((network) => {
+      console.log(network)
+      if (network !== undefined) {
+        setNetworkAdded(network.name)
+      }
+    })
     if (networkAdded !== undefined) {
       console.log('Network added: ', networkAdded)
       next()
     }
-  }, [networkAdded])
+  }, [networkAdded, loadingNetwork])
 
   return (
     <Stack alignItems={'center'} sx={{ m: 4 }}>
@@ -120,6 +155,7 @@ export const ConnectNetworks = ({ next }: Props) => {
                   <IconButton
                     onClick={() => addNetwork(network)}
                     disabled={networkAdded === network.name}
+                    sx={{ color: 'white' }}
                   >
                     {networkAdded === network.name ? (
                       <CheckCircleIcon
@@ -128,10 +164,8 @@ export const ConnectNetworks = ({ next }: Props) => {
                         }}
                       />
                     ) : (
-                      <SyncIcon
-                        sx={{
-                          color: theme.palette.text.primary,
-                        }}
+                      <SpinningSyncIcon
+                        flag={loadingNetwork === network.name}
                       />
                     )}
                   </IconButton>
