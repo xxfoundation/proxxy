@@ -8,7 +8,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const ExpandItem: React.FC<Props> = ({ title, children }) => {
+export const ExpandItem: React.FC<Props> = ({ title, children }) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -32,5 +32,3 @@ const ExpandItem: React.FC<Props> = ({ title, children }) => {
     </Stack>
   );
 };
-
-export default ExpandItem;

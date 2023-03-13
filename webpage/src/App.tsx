@@ -1,10 +1,21 @@
+import { Box, Container } from '@mui/material'
 import './App.css'
 import { Hello } from './Components/Hello'
+import icon from './assets/icon.svg';
+import { DownloadApp } from './Components/DownloadApp';
+
 
 function App() {
   return (
     <div className="App">
-      <Hello/>
+      <Container sx={{
+        maxWidth: '600px',
+        maxHeight: '800px',
+        overflowY: 'auto'
+      }}>
+        <Box><img width="200" alt="icon" src={icon}/></Box>
+        <Hello/>
+      </Container>
     </div>
   )
 }
