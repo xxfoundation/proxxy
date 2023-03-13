@@ -1,5 +1,3 @@
-
-
 import { Box, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { theme } from "../theme";
 
@@ -11,16 +9,36 @@ interface Network {
     icon: string;
 }
 
-interface Props {
-    networks: Network[];
-}
+const networks: Network[] = [
+  {
+    'name': 'Mainnet',
+    'chainId': 1,
+    'rpc': 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    'explorer': 'https://etherscan.io',
+    'icon': 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png'
+  },
+  {
+    'name': 'Ropsten',
+    'chainId': 3,
+    'rpc': 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    'explorer': 'https://ropsten.etherscan.io',
+    'icon': 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png'
+  },
+  {
+    'name': 'Goerli',
+    'chainId': 5,
+    'rpc': 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    'explorer': 'https://goerli.etherscan.io',
+    'icon': 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png'
+  },
+]
 
-export const Networks = ({networks}: Props) => {
+export const Networks = () => {
     return (
         <Stack alignItems={"center"} sx ={{ m: 4 }}>
             <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>Supported Networks</Typography>
             {networks.length === 0 
-            ? <Typography variant="body3" sx={{ color: theme.palette.text.primary }}>No networks found</Typography>
+            ? <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>No networks found</Typography>
             :
             <Table sx={{ width: '200px' }} aria-label="Supported Networks Table">
                 <TableHead>

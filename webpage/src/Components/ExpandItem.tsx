@@ -19,7 +19,7 @@ const ExpandItem: React.FC<Props> = ({ title, children }) => {
     <Stack alignSelf={"baseline"}>
       <ListItemButton onClick={handleExpandClick} sx={{ p: 1, borderRadius: '10px 10px 0 0', color: theme.palette.primary.main }}>
         <ListItemText primary={
-            <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>{title}</Typography>
+            <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>{title}</Typography>
         } />
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItemButton>

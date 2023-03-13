@@ -36,14 +36,12 @@ interface Props {
 
 export default function CustomizedSteppers ({ steps, activeStep }: Props): React.ReactElement {
   return (
-    <Stack sx={{ width: '100%' }} spacing={4}>
-      <Stepper alternativeLabel activeStep={activeStep} connector={<CustomizedConnector />}>
-        {steps.map((label) => (
-          <Step key={label}>
-            <CustomizedLabel>{label}</CustomizedLabel>
-          </Step>
-        ))}
-      </Stepper>
-    </Stack>
+    <Stepper alternativeLabel activeStep={activeStep} connector={<CustomizedConnector />}>
+      {steps.map((label) => (
+        <Step key={label}>
+          <CustomizedLabel>{label}</CustomizedLabel>
+        </Step>
+      ))}
+    </Stepper>
   );
 }

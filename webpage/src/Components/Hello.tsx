@@ -1,9 +1,12 @@
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import icon from '../assets/icon.svg';
 import CustomizedSteppers from "./Stepper";
-import { CheckCmixConnection } from "../Steps/CheckCmixConnection";
+import { CheckCmixConnection, Connected, Connection } from "../Steps/CheckCmixConnection";
 import { useCallback, useState } from "react";
 import ExpandItem from "./ExpandItem";
+import { ConnectWallet } from "../Steps/ConnectWallet";
+import { StepContent } from "./StepContent";
+import { theme } from "../theme";
 
 declare global {
   var astilectron: any
@@ -23,8 +26,10 @@ const thread = (
 );
 
 export const Hello = () => {
-  const steps = ['Check local cMix Proxxy App', 'Connect to Wallet'];
+  const steps = ['Check if running local Proxxy App', 'Connect to Wallet', 'Connect to Network'];
   const [step, setStep] = useState(0);
+  const [connecting, setConnecting] = useState<Connection>('off');
+  const [walletConnected, setWalletConnected] = useState(false);
 
   const next = useCallback(() => {
     setStep((v) => Math.min(steps.length - 1, v + 1));
@@ -37,20 +42,39 @@ export const Hello = () => {
     });
   }, []);
 
+  const restart = useCallback(
+    () => {
+      setConnecting('off');
+      setStep((v) => 0);
+    },
+  [setConnecting]);
+
   return (
-    <Container sx={{ 
-      width: '350px',
-      maxWidth: '400px',
+    <Container sx={{
+      maxWidth: '600px',
       maxHeight: '800px',
       overflowY: 'auto'
     }}>
-      <Stack alignItems={"center"}>
-        <Box paddingTop={2} paddingBottom={4}><img width="200" alt="icon" src={icon}/></Box>
+      <Stack alignItems={"center"} spacing={4}>
+        <Box><img width="200" alt="icon" src={icon}/></Box>
         <CustomizedSteppers steps={steps} activeStep={step} />
-        <CheckCmixConnection back={back} next={next} />
-      </Stack>
-      <Stack sx={{ maxWidth: '400px' }}>
-        <ExpandItem title={'More Information'} children={thread}/>
+        {connecting === 'on' ?
+          <Stack alignItems={"center"} spacing={3}>
+            <StepContent step={step} setWalletConnected={setWalletConnected} next={next}/>
+            <Stack direction={'row'} justifyContent={'space-between'} width={'100%'}>
+              <Button variant={'outlined'} onClick={restart} disabled={step === 0}>
+                <Typography variant='body3' sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}>Restart</Typography>
+              </Button>
+              <Button variant={'contained'} onClick={next} disabled={step === steps.length - 1 || !walletConnected}>
+                <Typography variant='body3' sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}>Next</Typography>
+              </Button>
+            </Stack>
+          </Stack>
+          : <CheckCmixConnection back={back} next={next} connecting={connecting} setConnecting={setConnecting}/> 
+        }
+        <Stack sx={{ maxWidth: '400px' }}>
+          <ExpandItem title={'More Information'} children={thread}/>
+        </Stack>
       </Stack>
     </Container>
   );
