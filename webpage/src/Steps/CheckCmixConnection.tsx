@@ -1,8 +1,12 @@
-import { Alert, Stack, Typography } from '@mui/material'
+import { Alert, Box, Stack, Typography } from '@mui/material'
 import { useCallback } from 'react'
 import Loading from '../Utils/loading'
 import { theme } from '../theme'
-import { checkPort, RoundedButtonContainer } from '../Utils/utils'
+import {
+  checkPort,
+  RoundedButtonContainer,
+  SquaredButtonContainer,
+} from '../Utils/utils'
 
 export type Connection = 'off' | 'connecting' | 'on'
 
@@ -13,6 +17,8 @@ export const Connected = (
     </Typography>
   </Alert>
 )
+
+const connectCmixInfo = `Please check your connection to cmix network to continue. To connect to the cmix network you need to have your local server on. If you don't have your local server on, please go Back to download the xx network Proxxy App.`
 
 interface Props {
   next: () => void
@@ -45,8 +51,16 @@ export const CheckCmixConnection = ({
   return (
     <Stack alignItems={'center'} sx={{ m: 5 }}>
       {connecting === 'off' ? (
-        <Stack alignItems={'center'} spacing={4}>
-          {RoundedButtonContainer('Check', connect)}
+        <Stack alignItems={'center'} sx={{ width: '350px' }} spacing={4}>
+          <Typography
+            variant='body3'
+            sx={{ textAlign: 'justify', color: 'white' }}
+          >
+            {connectCmixInfo}
+          </Typography>
+          <Box>
+            <SquaredButtonContainer label={'Check'} callback={connect} />
+          </Box>
         </Stack>
       ) : connecting === 'connecting' ? (
         <Stack alignItems={'center'} spacing={2}>
@@ -54,7 +68,7 @@ export const CheckCmixConnection = ({
             variant='body2'
             sx={{ color: theme.palette.text.primary }}
           >
-            Checking cMix connection...
+            Checking cmix connection...
           </Typography>
           <Loading size='md' />
         </Stack>

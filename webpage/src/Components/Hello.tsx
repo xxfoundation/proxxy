@@ -44,8 +44,8 @@ const thread = (
 
 export const Hello = () => {
   const steps = [
-    'Download Electron App',
-    'Check if running local Proxxy App',
+    'Download App',
+    'Connect to App',
     'Connect to Wallet',
     'Connect to Network',
   ]
@@ -55,16 +55,15 @@ export const Hello = () => {
     setStep((v) => Math.min(steps.length, v + 1))
   }, [])
 
-  const back = useCallback(() => {
+  const back = useCallback((step?: number) => {
     setStep((v) => {
+      if (step !== undefined) {
+        return step
+      }
       const prev = Math.max(0, v - 1)
       return prev
     })
   }, [])
-
-  // useEffect(() => {
-  //   console.log('update step', step)
-  // }, [step])
 
   return (
     <Stack alignItems={'center'} spacing={4}>

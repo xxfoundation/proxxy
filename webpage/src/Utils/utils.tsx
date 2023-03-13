@@ -35,6 +35,62 @@ export const RoundedButtonContainer = (label: string, callback: () => void) => (
   </RoundedButton>
 )
 
+const SquaredButton = styled(Button)(({ theme }) => ({
+  border: `2px solid ${theme.palette.primary.main}`,
+  boxShadow: `0px 0px 7px ${theme.palette.primary.main}`,
+  borderRadius: '10px',
+  background: 'none',
+  alignContent: 'center',
+  [`&:hover`]: {
+    backgroundColor: theme.palette.primary.main + '30',
+    border: `2px solid ${theme.palette.primary.main}`,
+  },
+}))
+
+interface SquaredButtonProps {
+  label: string
+  callback: () => void
+  disabled?: boolean
+}
+
+export const SquaredButtonContainer = ({
+  label,
+  callback,
+  disabled = false,
+}: SquaredButtonProps) => (
+  <SquaredButton variant={'contained'} onClick={callback} disabled={disabled}>
+    <Stack sx={{ alignItems: 'center' }} direction={'column'} spacing={1}>
+      <Typography
+        variant='body4'
+        sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+      >
+        {label}
+      </Typography>
+    </Stack>
+  </SquaredButton>
+)
+
+interface ButtonProps {
+  label: string
+  callback: () => void
+  disabledLogic: boolean
+}
+
+export const StyledButton = ({
+  label,
+  callback,
+  disabledLogic,
+}: ButtonProps) => (
+  <Button variant={'outlined'} onClick={callback} disabled={disabledLogic}>
+    <Typography
+      variant='body3'
+      sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+    >
+      {label}
+    </Typography>
+  </Button>
+)
+
 const isHttpPortInUse = async (port: number): Promise<boolean> => {
   try {
     const response = await fetch(`http://localhost:${port}`, {

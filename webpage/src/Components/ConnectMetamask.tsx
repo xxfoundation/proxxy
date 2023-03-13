@@ -1,6 +1,7 @@
 import { Alert, Button, Typography } from '@mui/material'
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import Web3 from 'web3'
+import { SquaredButtonContainer } from '../Utils/utils'
 
 interface Props {
   setAccount: (account: string | undefined) => void
@@ -53,22 +54,17 @@ export const ConnectMetamask = ({ setAccount, setWalletConnected }: Props) => {
     <>
       {metamaskInstalled ? (
         <>
-          <Button
-            variant='contained'
-            onClick={connectMetamask}
+          <SquaredButtonContainer
+            label={
+              loading ? 'Connecting to Metamask...' : 'Connect to MetaMask'
+            }
+            callback={connectMetamask}
             disabled={loading}
-          >
-            <Typography
-              variant='body3'
-              sx={{ fontWeight: 'bold', color: 'white' }}
-            >
-              {loading ? 'Connecting to Metamask...' : 'Connect to MetaMask'}
-            </Typography>
-          </Button>
+          />
           {error !== undefined && (
             <Alert variant='filled' severity='error'>
-              {' '}
-              {error}{' '}
+              {error}
+              {' Please try again.'}
             </Alert>
           )}
         </>

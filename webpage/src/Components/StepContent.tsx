@@ -4,13 +4,13 @@ import { CheckCmixConnection, Connection } from '../Steps/CheckCmixConnection'
 import { ConnectWallet } from '../Steps/ConnectWallet'
 import { ConnectNetworks } from '../Steps/ConnectNetworks'
 import { theme } from '../theme'
-import { DownloadApp } from './DownloadApp'
+import { DownloadApp } from '../Steps/DownloadApp'
 
 interface Props {
   step: number
   maxSteps: number
   next: () => void
-  back: () => void
+  back: (step?: number) => void
 }
 
 const nextButtonDisable = (
@@ -22,15 +22,15 @@ const nextButtonDisable = (
   return (step > 1 && !walletConnected) || (step > 0 && connecting !== 'on')
 }
 
-const nextButtonDisplay = (step: number): boolean => {
-  return step >= 0 && step < 3
+const restartButtonDisplay = (step: number): boolean => {
+  return step >= 4
 }
 
 export const StepContent = ({ step, maxSteps, next, back }: Props) => {
   const [connecting, setConnecting] = useState<Connection>('off')
   const [walletConnected, setWalletConnected] = useState(false)
 
-  const restart = useCallback(() => {
+  const goBack = useCallback(() => {
     if (step === 2) {
       setConnecting('off')
     }
@@ -40,11 +40,15 @@ export const StepContent = ({ step, maxSteps, next, back }: Props) => {
     back()
   }, [step, back, setConnecting])
 
+  const restart = useCallback(() => {
+    setConnecting('off')
+    setWalletConnected(false)
+    back(0)
+  }, [next, setConnecting, setWalletConnected])
+
   return (
-    <Stack alignItems={'center'} spacing={3}>
-      {step === 0 && (
-        <DownloadApp title={'cMix Proxxy Electron App'} label={'Download'} />
-      )}
+    <Stack alignItems={'center'} spacing={4} width={'95%'} padding={2}>
+      {step === 0 && <DownloadApp />}
       {step === 1 && (
         <CheckCmixConnection
           next={next}
@@ -54,16 +58,20 @@ export const StepContent = ({ step, maxSteps, next, back }: Props) => {
       )}
       {step === 2 && <ConnectWallet setWalletConnected={setWalletConnected} />}
       {step >= 3 && <ConnectNetworks next={next} />}
-      <Stack direction={'row'} justifyContent={'space-between'} width={'100%'}>
-        <Button variant={'outlined'} onClick={restart} disabled={step === 0}>
-          <Typography
-            variant='body3'
-            sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
-          >
-            Back
-          </Typography>
-        </Button>
-        {nextButtonDisplay(step) && (
+      {!restartButtonDisplay(step) ? (
+        <Stack
+          direction={'row'}
+          justifyContent={'space-between'}
+          minWidth={'100%'}
+        >
+          <Button variant={'outlined'} onClick={goBack} disabled={step === 0}>
+            <Typography
+              variant='body3'
+              sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+            >
+              Back
+            </Typography>
+          </Button>
           <Button
             variant={'contained'}
             onClick={next}
@@ -79,8 +87,19 @@ export const StepContent = ({ step, maxSteps, next, back }: Props) => {
               Next
             </Typography>
           </Button>
-        )}
-      </Stack>
+        </Stack>
+      ) : (
+        <Stack direction={'row'} justifyContent={'center'} minWidth={'100%'}>
+          <Button variant={'outlined'} onClick={restart} disabled={step === 0}>
+            <Typography
+              variant='body3'
+              sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+            >
+              Restart
+            </Typography>
+          </Button>
+        </Stack>
+      )}
     </Stack>
   )
 }
