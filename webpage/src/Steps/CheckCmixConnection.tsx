@@ -13,7 +13,7 @@ export type Connection = 'off' | 'connecting' | 'on'
 export const Connected = (
   <Alert variant='filled' sx={{ padding: '4px 10px', mb: 1 }}>
     <Typography variant='body4' fontWeight={700}>
-      Connected to cmix network!
+      Proxxy Connected
     </Typography>
   </Alert>
 )

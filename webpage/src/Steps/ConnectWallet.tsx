@@ -25,9 +25,6 @@ export const ConnectWallet = ({ setWalletConnected }: Props) => {
               Wallet Connected!
               <br />
             </Typography>
-            <Typography variant='body4' sx={{ fontFamily: 'monospace', pr: 1 }}>
-              {account}
-            </Typography>
           </Alert>
         </Stack>
       )}

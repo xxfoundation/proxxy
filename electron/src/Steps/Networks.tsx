@@ -18,22 +18,6 @@ export const Networks = ({ networks }: Props) => {
           </Typography>
         ))}
       </Stack>
-      <Alert
-        variant={'outlined'}
-        severity={'info'}
-        sx={{
-          fontSize: '12px',
-          textAlign: 'left',
-          padding: '4px 8px',
-          color: theme.palette.primary.contrastText,
-        }}
-      >
-        Go back to{' '}
-        <i>
-          <b>Proxxy Webpage</b>
-        </i>{' '}
-        to connect to a different network through cmix. <br />
-      </Alert>
     </Stack>
   )
 }

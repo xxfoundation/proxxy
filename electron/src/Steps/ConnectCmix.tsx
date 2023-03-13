@@ -1,5 +1,6 @@
 import {
   Alert,
+  AlertTitle,
   Box,
   Button,
   Container,
@@ -26,21 +27,17 @@ interface Response {
 
 const RoundedButton = styled(Button)(({ theme }) => ({
   border: `2px solid ${theme.palette.primary.main}`,
-  boxShadow: `0px 0px 7px ${theme.palette.primary.main}`,
+  boxShadow: `0px 0px 15px ${theme.palette.primary.main}`,
   borderRadius: '50%',
+  height: '90px',
+  width: '90px',
   background: 'none',
   alignContent: 'center',
-  aspectRatio: '1/1',
   [`&:hover`]: {
     backgroundColor: theme.palette.primary.main + '30',
     border: `2px solid ${theme.palette.primary.main}`,
   },
 }))
-
-interface Props {
-  back: () => void
-  next: () => void
-}
 
 interface PropsConnection {
   connection: Connection
@@ -62,17 +59,23 @@ const connectToCmix = ({ connection }: PropsConnection) => (
       <Alert
         severity='info'
         variant='filled'
-        sx={{ padding: '4px 10px', mb: 1 }}
+        icon={false}
+        sx={{ paddingLeft: '2em', textAlign: 'left' }}
       >
+        <AlertTitle sx={{ mb: 1, fontWeight: 'bold', textAlign: 'center' }}>
+          Welcome to Proxxy
+        </AlertTitle>
         <Typography variant='body4' fontWeight={700}>
-          Connect to cmix
+          This app will solely connect you to the cmix network. <br />
+          It will open an HTTP proxy server in your computer which will allow
+          you to connect to other blockchain networks through cmix.
         </Typography>
       </Alert>
     )}
   </>
 )
 
-export const ConnectCmix = ({ back, next }: Props) => {
+export const ConnectCmix = () => {
   const [password, setPassword, setPasswordValue] = useInput('')
   const [connecting, setConnecting] = useState<Connection>('off')
   const [networks, setNetworks] = useState<string[]>([])
@@ -83,14 +86,12 @@ export const ConnectCmix = ({ back, next }: Props) => {
       ? setTimeout(() => {
           setNetworks(['ethereum', 'polygon'])
           setConnecting('on')
-          next()
         }, 1000)
       : global.astilectron.sendMessage(
           { name: 'connect', payload: password },
           (resp: Response) => {
             setNetworks(resp.payload as string[])
             setConnecting('on')
-            next()
           },
         )
   }, [setConnecting, setNetworks])
@@ -100,12 +101,10 @@ export const ConnectCmix = ({ back, next }: Props) => {
       ? setTimeout(() => {
           setPasswordValue('')
           setConnecting('off')
-          back()
         }, 1000)
       : global.astilectron.sendMessage({ name: 'disconnect' }, () => {
           setPasswordValue('')
           setConnecting('off')
-          back()
         })
   }, [setConnecting, setNetworks, setPasswordValue])
 
@@ -141,17 +140,33 @@ export const ConnectCmix = ({ back, next }: Props) => {
       ) : connecting === 'connecting' ? (
         <Stack alignItems={'center'} spacing={2}>
           <Typography
-            variant='body3'
+            variant='body2'
             sx={{ color: theme.palette.text.primary }}
           >
-            Connecting to cMix
+            Connecting to cmix network...
           </Typography>
           <Loading size='md' />
         </Stack>
       ) : (
         <Stack alignItems={'center'} spacing={3}>
           {connectToCmix({ connection: connecting })}
-          <Networks networks={networks} />
+          {/* <Networks networks={networks} /> */}
+          <Alert
+            variant={'outlined'}
+            severity={'info'}
+            sx={{
+              fontSize: '12px',
+              textAlign: 'left',
+              padding: '4px 8px',
+              color: theme.palette.primary.contrastText,
+            }}
+          >
+            Go back to{' '}
+            <i>
+              <b>Proxxy Webpage</b>
+            </i>{' '}
+            to connect to a different network through cmix. <br />
+          </Alert>
           <RoundedButton variant={'contained'} onClick={disconnect}>
             <Stack
               sx={{ alignItems: 'center' }}
