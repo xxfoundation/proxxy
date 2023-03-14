@@ -8,9 +8,8 @@ function App() {
     <div className='App'>
       <Container
         sx={{
-          maxWidth: '600px',
-          maxHeight: '800px',
-          overflowY: 'auto',
+          maxWidth: '800px',
+          maxHeight: '1600px',
         }}
       >
         <Box margin={2}>

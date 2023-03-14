@@ -5,11 +5,13 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableRow,
   Typography,
 } from '@mui/material'
 import { theme } from '../theme'
 import { Network } from '../Utils/utils'
+import { Networks } from '../Utils/networks'
 import SyncIcon from '@mui/icons-material/Sync'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useCallback, useEffect, useState } from 'react'
@@ -42,32 +44,14 @@ const SpinningSyncIcon = ({ flag }: SpinningProps) => {
   )
 }
 
-const baseRPC = 'http://localhost:9296'
 const baseNetworkName = '(Proxxy) '
-
-const networks: Network[] = [
-  {
-    name: 'Ethereum Mainnet',
-    chainId: 1,
-    symbol: 'ETH',
-    rpc: `${baseRPC}/ethereum/mainnet`,
-    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png',
-  },
-  {
-    name: 'Goerli Testnet',
-    chainId: 5,
-    symbol: 'ETH',
-    rpc: `${baseRPC}/ethereum/goerli`,
-    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png',
-  },
-]
 
 const checkConnectedNetwork = async () => {
   const chainId = await window.ethereum.request({
     method: 'eth_chainId',
   })
   console.log(chainId)
-  return networks.find((network) => network.chainId === parseInt(chainId))
+  return Networks.find((network) => network.chainId === parseInt(chainId))
 }
 
 interface Props {
@@ -133,47 +117,49 @@ export const SelectNetworks = ({ next }: Props) => {
 
   return (
     <Stack alignItems={'center'} sx={{ m: 4 }}>
-      <Typography variant='h5' sx={{ color: theme.palette.primary.main }}>
+      <Typography variant='h5' sx={{ color: theme.palette.primary.main, paddingBottom: 2 }}>
         Supported Networks
       </Typography>
-      {networks.length === 0 ? (
+      {Networks.length === 0 ? (
         <Typography variant='body2' sx={{ color: theme.palette.text.primary }}>
           No networks found
         </Typography>
       ) : (
-        <Table sx={{ width: '300px' }} aria-label='Supported Networks Table'>
-          <TableBody>
-            {Object.values(networks).map((network: Network) => (
-              <TableRow key={network.name}>
-                <TableCell>
-                  <Box>
-                    <img width='30' alt='icon' src={network.icon} />
-                  </Box>
-                </TableCell>
-                <TableCell>{network.name}</TableCell>
-                <TableCell>
-                  <IconButton
-                    onClick={() => addNetwork(network)}
-                    disabled={networkAdded === network.name}
-                    sx={{ color: 'white' }}
-                  >
-                    {networkAdded === network.name ? (
-                      <CheckCircleIcon
-                        sx={{
-                          color: theme.palette.success.main,
-                        }}
-                      />
-                    ) : (
-                      <SpinningSyncIcon
-                        flag={loadingNetwork === network.name}
-                      />
-                    )}
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <TableContainer sx={{ maxHeight: 250 }}>
+          <Table sx={{ width: '400px', overflowY: 'scroll' }} aria-label='Supported Networks Table'>
+            <TableBody>
+              {Object.values(Networks).map((network: Network) => (
+                <TableRow key={network.name}>
+                  <TableCell>
+                    <Box>
+                      <img width='30' alt='icon' src={network.icon} />
+                    </Box>
+                  </TableCell>
+                  <TableCell>{network.name}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => addNetwork(network)}
+                      disabled={networkAdded === network.name}
+                      sx={{ color: 'white' }}
+                    >
+                      {networkAdded === network.name ? (
+                        <CheckCircleIcon
+                          sx={{
+                            color: theme.palette.success.main,
+                          }}
+                        />
+                      ) : (
+                        <SpinningSyncIcon
+                          flag={loadingNetwork === network.name}
+                        />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
     </Stack>
   )

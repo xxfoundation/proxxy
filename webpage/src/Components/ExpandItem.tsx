@@ -50,7 +50,7 @@ export const ExpandItem: React.FC<Props> = ({ title, children }) => {
         timeout='auto'
         unmountOnExit
         sx={{
-          maxHeight: '150px',
+          maxHeight: '300px',
           overflowY: 'scroll',
           textAlign: 'justify',
           pb: 1,
