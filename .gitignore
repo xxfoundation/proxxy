@@ -4,8 +4,8 @@ Thumbs.db
 bind*
 output
 windows.syso
-frontend/node_modules
-frontend/release/app/dist
-frontend/release/build
-frontend/.erb/dll
+**/node_modules
+**/release/app/dist
+**/release/build
+**/.erb/dll
 resources/app

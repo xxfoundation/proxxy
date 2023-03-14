@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "useDefineForClassFields": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    // "target": "ESNext",
+    // "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    // "module": "ESNext",
+    
+    "target": "es2021",
+    "module": "commonjs",
+    "lib": ["dom", "es2021"],
+
+    "incremental": true,
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "outDir": ".erb/dll"
+  },
+  "exclude": ["test", "release/build", "release/app/dist", ".erb/dll"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

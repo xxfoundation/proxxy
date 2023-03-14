@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-pushd frontend
-yarn
-yarn build:renderer
+pushd electron
+npm install
+npm run build:renderer
 popd
 rm -rf resources/app
-cp -r frontend/release/app/dist/renderer resources/app
+cp -r electron/release/app/dist/renderer resources/app
 astilectron-bundler
