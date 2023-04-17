@@ -14,8 +14,9 @@ import { Network } from '../Utils/utils'
 import { Networks, Testnets } from '../Utils/networks'
 import SyncIcon from '@mui/icons-material/Sync'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ExpandItem } from '../Components/ExpandItem'
+import useToggle from '../hooks/useToggle'
 
 interface SpinningProps {
   flag: boolean
@@ -51,8 +52,7 @@ const checkConnectedNetwork = async () => {
   const chainId = await window.ethereum.request({
     method: 'eth_chainId',
   })
-  console.log(chainId)
-  return Networks.find((network) => network.chainId === parseInt(chainId))
+  return Networks.concat(Testnets).find((network) => network.chainId === parseInt(chainId))
 }
 
 interface Props {
@@ -66,61 +66,61 @@ export const SelectNetworks = ({ next }: Props) => {
   const [loadingNetwork, setLoadingNetwork] = useState<string | undefined>(
     undefined,
   )
-  const addCustomNetwork = async (network: Network) => {
-    try {
-      await window.ethereum.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: `0x${network.chainId.toString(16)}`,
-            chainName: `${baseNetworkName}${network.name}`,
-            nativeCurrency: {
-              name: network.symbol,
-              symbol: network.symbol,
-              decimals: 18,
-            },
-            rpcUrls: [network.rpc],
-          },
-        ],
-      })
-    } catch (addError) {
-      console.error('Could not add network to MetaMask', addError)
+
+  const [networksExpanded, {toggle: toggleNetworks}] = useToggle(true)
+  const [testnetsExpanded, {toggle: toggleTestnets}] = useToggle(false)
+
+  const setNetworksExpanded = useCallback(() => {
+    if (testnetsExpanded) {
+      toggleTestnets()
     }
+    toggleNetworks()
+  }, [toggleNetworks, testnetsExpanded, toggleTestnets])
+
+  const setTestnetsExpanded = useCallback(() => {
+    if (networksExpanded) {
+      toggleNetworks()
+    }
+    toggleTestnets()
+  }, [toggleNetworks, networksExpanded, toggleTestnets])
+
+  const addCustomNetwork = async (network: Network) => {
+    return await window.ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: `0x${network.chainId.toString(16)}`,
+          chainName: `${baseNetworkName}${network.name}`,
+          nativeCurrency: {
+            name: network.symbol,
+            symbol: network.symbol,
+            decimals: 18,
+          },
+          rpcUrls: [network.rpc],
+        },
+      ],
+    })
   }
 
   const addNetwork = useCallback(async (network: Network) => {
-    try {
-      setLoadingNetwork(network.name)
-      const retval = await addCustomNetwork(network)
-      setLoadingNetwork(undefined)
-      retval === null
-        ? setNetworkAdded(network.name)
-        : setNetworkAdded(undefined)
-    } catch (error) {
+    setLoadingNetwork(network.name)
+    addCustomNetwork(network).then(() => {
+      checkConnectedNetwork().then((network) => {
+        if (network !== undefined) {
+          setNetworkAdded(network.name)
+          setLoadingNetwork(undefined)
+          next()
+        }
+      })
+    }).catch((error) => {
       console.error(`Error adding ${network.name} to MetaMask`, error)
+      setLoadingNetwork(undefined)
       setNetworkAdded(undefined)
-    }
-  }, [])
-
-  useEffect(() => {
-    console.log(loadingNetwork)
-    checkConnectedNetwork().then((network) => {
-      console.log(network)
-      if (network !== undefined) {
-        setNetworkAdded(network.name)
-      }
     })
-    if (networkAdded !== undefined) {
-      console.log('Network added: ', networkAdded)
-      next()
-    }
-  }, [networkAdded, loadingNetwork])
+  }, [])
 
   return (
     <Stack alignItems={'center'}>
-      {/* <Typography variant='h5' sx={{ color: theme.palette.primary.main, paddingBottom: 2 }}>
-        Supported Networks
-      </Typography> */}
       {Networks.length === 0 ? (
         <Typography variant='body2' sx={{ color: theme.palette.text.primary }}>
           No networks found
@@ -163,7 +163,7 @@ export const SelectNetworks = ({ next }: Props) => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-              } startExpanded={true}
+              } expanded={networksExpanded} setExpanded={setNetworksExpanded}
             />
             <ExpandItem title={'Supported Testnets'} children={
               <TableContainer>
@@ -201,7 +201,7 @@ export const SelectNetworks = ({ next }: Props) => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-             } startExpanded={false}
+             } expanded={testnetsExpanded} setExpanded={setTestnetsExpanded}
             />
         </Stack>
       )}

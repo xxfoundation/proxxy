@@ -13,12 +13,12 @@ export type Connection = 'off' | 'connecting' | 'on'
 export const Connected = (
   <Alert variant='filled' sx={{ padding: '4px 10px', mb: 1 }}>
     <Typography variant='body4' fontWeight={700}>
-      Proxxy Connected
+      Proxxy Connected!
     </Typography>
   </Alert>
 )
 
-const connectCmixInfo = `Please check your connection to cmix network to continue. To connect to the cmix network you need to have your local server on. If you don't have your local server on, please go Back to download the xx network Proxxy App.`
+const connectCmixInfo = `Open the Proxxy app and connect to cMix. Use the button below to verify Proxxy is active, and then click Next to proceed.`
 
 interface Props {
   next: () => void
@@ -59,7 +59,7 @@ export const CheckCmixConnection = ({
             {connectCmixInfo}
           </Typography>
           <Box>
-            <SquaredButtonContainer label={'Check'} callback={connect} />
+            <SquaredButtonContainer label={'Verify Connection'} callback={connect} />
           </Box>
         </Stack>
       ) : connecting === 'connecting' ? (
@@ -68,7 +68,7 @@ export const CheckCmixConnection = ({
             variant='body2'
             sx={{ color: theme.palette.text.primary }}
           >
-            Checking cmix connection...
+            Verifying Proxxy connection...
           </Typography>
           <Loading size='md' />
         </Stack>

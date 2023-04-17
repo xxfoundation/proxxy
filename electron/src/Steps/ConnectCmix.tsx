@@ -80,7 +80,7 @@ export const ConnectCmix = () => {
         }, 1000)
       : global.astilectron.sendMessage(
           { name: 'connect' },
-          () => {
+          (resp: any) => {
             setConnecting('on')
           }
         )

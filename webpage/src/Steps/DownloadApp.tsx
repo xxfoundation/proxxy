@@ -9,7 +9,7 @@ const fileUrl =
 const appUrl = `https://proxxy.xx.network/`
 
 const downloadInfo =
-  'Download the xx network Proxxy app to your computer. This will allow you to connect to cmix and use the Proxxy service.'
+  'Download the xx network Proxxy app to your computer. This will allow you to connect to cMix and use the Proxxy privacy protection service.'
 
 const detectOperatingSystem = (): string => {
   const platform = navigator.platform

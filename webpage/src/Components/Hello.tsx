@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { StepContent } from './StepContent'
 import { theme } from '../theme'
 import { ExpandItem } from './ExpandItem'
+import useToggle from '../hooks/useToggle'
 
 declare global {
   var astilectron: any
@@ -65,6 +66,8 @@ export const Hello = () => {
     })
   }, [])
 
+  const [expanded, {toggle: setExpanded}] = useToggle(false)
+
   return (
     <Stack alignItems={'center'} spacing={4}>
       <CustomizedSteppers steps={steps} activeStep={step} />
@@ -75,7 +78,7 @@ export const Hello = () => {
         back={back}
       />
       <Stack sx={{ maxWidth: '600px' }}>
-        <ExpandItem title={'More Information'} children={thread} startExpanded={false} />
+        <ExpandItem title={'More Information'} children={thread} expanded={expanded} setExpanded={setExpanded} />
       </Stack>
     </Stack>
   )

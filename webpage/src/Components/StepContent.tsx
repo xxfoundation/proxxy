@@ -18,7 +18,6 @@ const nextButtonDisable = (
   connecting: Connection,
   walletConnected: boolean,
 ): boolean => {
-  console.log(connecting !== 'on')
   return (step > 1 && !walletConnected) || (step > 0 && connecting !== 'on')
 }
 

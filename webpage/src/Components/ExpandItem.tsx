@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback } from 'react'
 import {
   Typography,
   Collapse,
@@ -15,20 +15,15 @@ import { theme } from '../theme'
 interface Props {
   title: string
   children: React.ReactNode
-  startExpanded: boolean
+  expanded: boolean
+  setExpanded: () => void
 }
 
-export const ExpandItem: React.FC<Props> = ({ title, children, startExpanded }) => {
-  const [expanded, setExpanded] = useState(startExpanded)
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
-
+export const ExpandItem: React.FC<Props> = ({ title, children, expanded, setExpanded }) => {
   return (
     <Stack alignSelf={'baseline'}>
       <ListItemButton
-        onClick={handleExpandClick}
+        onClick={setExpanded}
         sx={{
           p: 1,
           borderRadius: '10px 10px 0 0',
