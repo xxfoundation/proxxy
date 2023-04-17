@@ -65,7 +65,7 @@ func DefaultConfig(appname string) Config {
 		CertFile:     path.Join(resources, "mainnet.crt"),
 		NdfUrl:       "https://elixxir-bins.s3.us-west-1.amazonaws.com/ndf/mainnet.json",
 		StatePath:    path.Join(datadir, "state"),
-		Retries:      3,
+		Retries:      5,
 		Port:         9296,
 	}
 }
