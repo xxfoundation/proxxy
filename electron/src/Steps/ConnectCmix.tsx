@@ -1,19 +1,14 @@
 import {
   Alert,
   AlertTitle,
-  Box,
   Button,
-  Container,
   Stack,
   styled,
-  TextField,
   Typography,
 } from '@mui/material'
 import { useCallback, useState } from 'react'
 import Loading from '../Utils/loading'
-import useInput from '../hooks/useInput'
 import { theme } from '../theme'
-import { Networks } from './Networks'
 
 declare global {
   var astilectron: any
@@ -52,7 +47,7 @@ const connectToCmix = ({ connection }: PropsConnection) => (
         sx={{ padding: '4px 10px', mb: 1 }}
       >
         <Typography variant='body4' fontWeight={700}>
-          Connected to cmix network!
+          Connected to cMix!
         </Typography>
       </Alert>
     ) : (
@@ -66,9 +61,8 @@ const connectToCmix = ({ connection }: PropsConnection) => (
           Welcome to Proxxy
         </AlertTitle>
         <Typography variant='body4' fontWeight={700}>
-          This app will solely connect you to the cmix network. <br />
-          It will open an HTTP proxy server in your computer which will allow
-          you to connect to other blockchain networks through cmix.
+          This app will protect your privacy while transacting with supported blockchain networks. <br />
+          Press the Start button to connect to the cMix network and begin using Proxxy.
         </Typography>
       </Alert>
     )}
@@ -76,52 +70,40 @@ const connectToCmix = ({ connection }: PropsConnection) => (
 )
 
 export const ConnectCmix = () => {
-  const [password, setPassword, setPasswordValue] = useInput('')
   const [connecting, setConnecting] = useState<Connection>('off')
-  const [networks, setNetworks] = useState<string[]>([])
 
   const connect = useCallback(() => {
     setConnecting('connecting')
     process.env.NODE_ENV !== 'production'
       ? setTimeout(() => {
-          setNetworks(['ethereum', 'polygon'])
           setConnecting('on')
         }, 1000)
       : global.astilectron.sendMessage(
-          { name: 'connect', payload: password },
-          (resp: Response) => {
-            setNetworks(resp.payload as string[])
+          { name: 'connect' },
+          () => {
             setConnecting('on')
-          },
+          }
         )
-  }, [setConnecting, setNetworks])
+  }, [setConnecting])
 
   const disconnect = useCallback(() => {
     process.env.NODE_ENV !== 'production'
       ? setTimeout(() => {
-          setPasswordValue('')
           setConnecting('off')
         }, 1000)
-      : global.astilectron.sendMessage({ name: 'disconnect' }, () => {
-          setPasswordValue('')
-          setConnecting('off')
-        })
-  }, [setConnecting, setNetworks, setPasswordValue])
+      : global.astilectron.sendMessage(
+          { name: 'disconnect' },
+          () => {
+            setConnecting('off')
+          }
+        )
+  }, [setConnecting])
 
   return (
     <Stack alignItems={'center'}>
       {connecting === 'off' ? (
         <Stack alignItems={'center'} spacing={4}>
           {connectToCmix({ connection: connecting })}
-          <Box>
-            <TextField
-              type='password'
-              label='Password'
-              size='small'
-              value={password}
-              onChange={setPassword}
-            />
-          </Box>
           <RoundedButton variant={'contained'} onClick={connect}>
             <Stack
               sx={{ alignItems: 'center' }}
@@ -143,14 +125,13 @@ export const ConnectCmix = () => {
             variant='body2'
             sx={{ color: theme.palette.text.primary }}
           >
-            Connecting to cmix network...
+            Connecting to cMix...
           </Typography>
           <Loading size='md' />
         </Stack>
       ) : (
         <Stack alignItems={'center'} spacing={3}>
           {connectToCmix({ connection: connecting })}
-          {/* <Networks networks={networks} /> */}
           <Alert
             variant={'outlined'}
             severity={'info'}
@@ -161,11 +142,7 @@ export const ConnectCmix = () => {
               color: theme.palette.primary.contrastText,
             }}
           >
-            Go back to{' '}
-            <i>
-              <b>Proxxy Webpage</b>
-            </i>{' '}
-            to connect to a different network through cmix. <br />
+            Head to <b>proxxy.xx.network</b> to connect Proxxy to your MetaMask and select a network
           </Alert>
           <RoundedButton variant={'contained'} onClick={disconnect}>
             <Stack

@@ -36,18 +36,6 @@ func (h *Handler) HandleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (
 			return err.Error(), err
 		}
 
-		// Get password from request
-		var password string
-		if len(m.Payload) > 0 {
-			// Unmarshal payload
-			if err = json.Unmarshal(m.Payload, &password); err != nil {
-				return err.Error(), err
-			}
-		} else {
-			err = errors.New("must specify a password")
-			return err.Error(), err
-		}
-
 		// Create API
 		config := api.Config{
 			LogPrefix:     h.config.LogPrefix,
@@ -55,7 +43,7 @@ func (h *Handler) HandleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (
 			Cert:          h.config.CertFile,
 			NdfUrl:        h.config.NdfUrl,
 			StatePath:     h.config.StatePath,
-			StatePassword: password,
+			StatePassword: "",
 			ContactFile:   h.config.ContactFile,
 		}
 		h.apiInstance = api.NewApi(config)

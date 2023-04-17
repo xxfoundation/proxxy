@@ -37,8 +37,8 @@ export const Hello = () => {
   return (
     <Container
       sx={{
-        width: '350px',
-        maxWidth: '400px',
+        width: '400px',
+        maxWidth: '450px',
         maxHeight: '800px',
         overflowY: 'auto',
       }}
