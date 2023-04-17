@@ -11,13 +11,13 @@ export const Networks: Network[] = [
     rpc: `${baseRPC}/ethereum/mainnet`,
     icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png',
   },
-  // Binance Smart Chain
+  // Avalanche
   {
-    name: 'Binance Smart Chain Mainnet',
-    chainId: 56,
-    symbol: 'BNB',
-    rpc: `${baseRPC}/bnb/mainnet`,
-    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png',
+    name: 'Avalanche C-Chain',
+    chainId: 43114,
+    symbol: 'AVAX',
+    rpc: `${baseRPC}/avalanche/mainnet/c`,
+    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avalanchec/info/logo.png',
   },
   // Polygon
   {
@@ -27,13 +27,13 @@ export const Networks: Network[] = [
     rpc: `${baseRPC}/polygon/mainnet`,
     icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/info/logo.png',
   },
-  // Avalanche
+  // Binance Smart Chain
   {
-    name: 'Avalanche C-Chain',
-    chainId: 43114,
-    symbol: 'AVAX',
-    rpc: `${baseRPC}/avalanche/mainnet/c`,
-    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avalanchec/info/logo.png',
+    name: 'Binance Smart Chain Mainnet',
+    chainId: 56,
+    symbol: 'BNB',
+    rpc: `${baseRPC}/bnb/mainnet`,
+    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png',
   },
   // Astar
   {
@@ -110,11 +110,68 @@ export const Networks: Network[] = [
 ]
 
 export const Testnets: Network[] = [
+  // Ethereum Goerli
   {
-    name: 'Goerli Testnet',
+    name: 'Goerli',
     chainId: 5,
     symbol: 'ETH',
     rpc: `${baseRPC}/ethereum/goerli`,
-    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png',
+    icon: 'https://chainlist.org/unknown-logo.png',
+  },
+  // Ethereum Sepolia
+  {
+    name: 'Sepolia',
+    chainId: 11155111,
+    symbol: 'ETH',
+    rpc: `${baseRPC}/ethereum/sepolia`,
+    icon: 'https://chainlist.org/unknown-logo.png',
+  },
+  // Avalanche Fuji Testnet
+  {
+    name: 'Avalanche Fuji C-Chain',
+    chainId: 43113,
+    symbol: 'AVAX',
+    rpc: `${baseRPC}/avalanche/fuji/c`,
+    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avalanchecfuji/info/logo.png',
+  },
+  // Polygon Mumbai
+  {
+    name: 'Mumbai',
+    chainId: 80001,
+    symbol: 'MATIC',
+    rpc: `${baseRPC}/polygon/mumbai`,
+    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygonmumbai/info/logo.png',
+  },
+  // Binance Smart Chain
+  {
+    name: 'Binance Smart Chain Testnet',
+    chainId: 97,
+    symbol: 'tBNB',
+    rpc: `${baseRPC}/bnb/testnet`,
+    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/bnbt/info/logo.png',
+  },
+  // Fantom Testnet
+  {
+    name: 'Fantom Testnet',
+    chainId: 4002,
+    symbol: 'FTM',
+    rpc: `${baseRPC}/fantom/testnet`,
+    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/fantom/info/logo.png',
+  },
+  // Celo Alfajores Testnet
+  {
+    name: 'Celo Alfajores',
+    chainId: 44787,
+    symbol: 'CELO',
+    rpc: `${baseRPC}/celo/alfajores`,
+    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/celo/info/logo.png',
+  },
+  // Aurora Testnet
+  {
+    name: 'Aurora Testnet',
+    chainId: 1313161555,
+    symbol: 'ETH',
+    rpc: `${baseRPC}/aurora/testnet`,
+    icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/aurora/info/logo.png',
   }
 ]

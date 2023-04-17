@@ -3,10 +3,8 @@ import {
   Typography,
   Collapse,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Stack,
-  Box,
 } from '@mui/material'
 import {
   ExpandMore as ExpandMoreIcon,
@@ -17,10 +15,11 @@ import { theme } from '../theme'
 interface Props {
   title: string
   children: React.ReactNode
+  startExpanded: boolean
 }
 
-export const ExpandItem: React.FC<Props> = ({ title, children }) => {
-  const [expanded, setExpanded] = useState(false)
+export const ExpandItem: React.FC<Props> = ({ title, children, startExpanded }) => {
+  const [expanded, setExpanded] = useState(startExpanded)
 
   const handleExpandClick = () => {
     setExpanded(!expanded)

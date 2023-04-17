@@ -75,7 +75,7 @@ export const Hello = () => {
         back={back}
       />
       <Stack sx={{ maxWidth: '600px' }}>
-        <ExpandItem title={'More Information'} children={thread} />
+        <ExpandItem title={'More Information'} children={thread} startExpanded={false} />
       </Stack>
     </Stack>
   )

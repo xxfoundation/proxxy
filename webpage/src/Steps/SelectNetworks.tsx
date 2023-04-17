@@ -11,10 +11,11 @@ import {
 } from '@mui/material'
 import { theme } from '../theme'
 import { Network } from '../Utils/utils'
-import { Networks } from '../Utils/networks'
+import { Networks, Testnets } from '../Utils/networks'
 import SyncIcon from '@mui/icons-material/Sync'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useCallback, useEffect, useState } from 'react'
+import { ExpandItem } from '../Components/ExpandItem'
 
 interface SpinningProps {
   flag: boolean
@@ -116,50 +117,93 @@ export const SelectNetworks = ({ next }: Props) => {
   }, [networkAdded, loadingNetwork])
 
   return (
-    <Stack alignItems={'center'} sx={{ m: 4 }}>
-      <Typography variant='h5' sx={{ color: theme.palette.primary.main, paddingBottom: 2 }}>
+    <Stack alignItems={'center'}>
+      {/* <Typography variant='h5' sx={{ color: theme.palette.primary.main, paddingBottom: 2 }}>
         Supported Networks
-      </Typography>
+      </Typography> */}
       {Networks.length === 0 ? (
         <Typography variant='body2' sx={{ color: theme.palette.text.primary }}>
           No networks found
         </Typography>
       ) : (
-        <TableContainer sx={{ maxHeight: 250 }}>
-          <Table sx={{ width: '400px', overflowY: 'scroll' }} aria-label='Supported Networks Table'>
-            <TableBody>
-              {Object.values(Networks).map((network: Network) => (
-                <TableRow key={network.name}>
-                  <TableCell>
-                    <Box>
-                      <img width='30' alt='icon' src={network.icon} />
-                    </Box>
-                  </TableCell>
-                  <TableCell>{network.name}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      onClick={() => addNetwork(network)}
-                      disabled={networkAdded === network.name}
-                      sx={{ color: 'white' }}
-                    >
-                      {networkAdded === network.name ? (
-                        <CheckCircleIcon
-                          sx={{
-                            color: theme.palette.success.main,
-                          }}
-                        />
-                      ) : (
-                        <SpinningSyncIcon
-                          flag={loadingNetwork === network.name}
-                        />
-                      )}
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          <Stack alignItems={'center'} spacing={2}>
+            <ExpandItem title={'Supported Networks'} children={
+              <TableContainer>
+                <Table sx={{ width: '400px', overflowY: 'scroll' }} aria-label='Supported Networks Table'>
+                  <TableBody>
+                    {Object.values(Networks).map((network: Network) => (
+                      <TableRow key={network.name}>
+                        <TableCell width="15%">
+                          <Box>
+                            <img width='30' alt='icon' src={network.icon} />
+                          </Box>
+                        </TableCell>
+                        <TableCell width="65%">{network.name}</TableCell>
+                        <TableCell width="20%">
+                          <IconButton
+                            onClick={() => addNetwork(network)}
+                            disabled={networkAdded === network.name}
+                            sx={{ color: 'white' }}
+                          >
+                            {networkAdded === network.name ? (
+                              <CheckCircleIcon
+                                sx={{
+                                  color: theme.palette.success.main,
+                                }}
+                              />
+                            ) : (
+                              <SpinningSyncIcon
+                                flag={loadingNetwork === network.name}
+                              />
+                            )}
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              } startExpanded={true}
+            />
+            <ExpandItem title={'Supported Testnets'} children={
+              <TableContainer>
+                <Table sx={{ width: '400px', overflowY: 'scroll' }} aria-label='Supported Testnets Table'>
+                  <TableBody>
+                    {Object.values(Testnets).map((network: Network) => (
+                      <TableRow key={network.name}>
+                        <TableCell width="15%">
+                          <Box>
+                            <img width='30' alt='icon' src={network.icon} />
+                          </Box>
+                        </TableCell>
+                        <TableCell width="65%">{network.name}</TableCell>
+                        <TableCell width="20%">
+                          <IconButton
+                            onClick={() => addNetwork(network)}
+                            disabled={networkAdded === network.name}
+                            sx={{ color: 'white' }}
+                          >
+                            {networkAdded === network.name ? (
+                              <CheckCircleIcon
+                                sx={{
+                                  color: theme.palette.success.main,
+                                }}
+                              />
+                            ) : (
+                              <SpinningSyncIcon
+                                flag={loadingNetwork === network.name}
+                              />
+                            )}
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+             } startExpanded={false}
+            />
+        </Stack>
       )}
     </Stack>
   )
