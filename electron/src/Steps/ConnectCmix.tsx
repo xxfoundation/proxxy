@@ -136,13 +136,14 @@ export const ConnectCmix = () => {
             variant={'outlined'}
             severity={'info'}
             sx={{
+              width: '80%',
               fontSize: '12px',
               textAlign: 'left',
               padding: '4px 8px',
               color: theme.palette.primary.contrastText,
             }}
           >
-            Head to <b>proxxy.xx.network</b> to connect Proxxy to your MetaMask and select a network
+            Head to <b>proxxy.xx.network</b> to connect Proxxy to MetaMask and select a network
           </Alert>
           <RoundedButton variant={'contained'} onClick={disconnect}>
             <Stack

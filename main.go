@@ -11,9 +11,6 @@ import (
 	jww "github.com/spf13/jwalterweatherman"
 )
 
-// Constants
-const htmlAbout = `This is the xx network cMix proxy app.`
-
 // Vars injected via ldflags by bundler
 var (
 	AppName            string
