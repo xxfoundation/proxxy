@@ -41,14 +41,6 @@ func main() {
 	// New handler
 	handler := backend.NewHandler(config)
 
-	// About message
-	htmlAbout := `
-		<div style="text-align: center;">
-			<h1>Cmix Proxy</h1>
-			<p>Best proxy ever!</p>
-		</div>
-	`
-
 	// Run bootstrap
 	jww.INFO.Printf("Running app built at %s\n", BuiltAt)
 	if err := bootstrap.Run(bootstrap.Options{
@@ -68,18 +60,17 @@ func main() {
 			Label: astikit.StrPtr("File"),
 			SubLabel: astikit.StrPtr("File"),
 			SubMenu: []*astilectron.MenuItemOptions{
-				{Role: astilectron.MenuItemRoleClose},
+				{   // Add about menu item
+					Label: astikit.StrPtr("About"),
+					OnClick: func(e astilectron.Event) (deleteListener bool) {
+						bootstrap.SendMessage(w, "about", nil)
+						return
+					},
+				},
 				{   // Add dev tools menu item
 					Label: astikit.StrPtr("Dev Tools"),
 					OnClick: func(e astilectron.Event) (deleteListener bool) {
 						w.OpenDevTools()
-						return
-					},
-				},
-				{   // Add about menu item
-					Label: astikit.StrPtr("About"),
-					OnClick: func(e astilectron.Event) (deleteListener bool) {
-						bootstrap.SendMessage(w, "about", htmlAbout)
 						return
 					},
 				},
@@ -93,7 +84,7 @@ func main() {
 						msgReset := bootstrap.MessageIn{
 							Name: "reset",
 						}
-
+						
 						w.Log("Sending message: "+msgDisconnect.Name)
 						_, err := handler.HandleMessages(w, msgDisconnect)
 						if err != nil {
@@ -103,20 +94,21 @@ func main() {
 						_, err = handler.HandleMessages(w, msgReset)
 						if err != nil {
 							w.Log("[Reset] Error message: "+err.Error())
-						} else {
-							err = bootstrap.SendMessage(w, "reset", nil)
-							if err != nil {
-								w.Log("[Bootstrap] Error sending reset message to frontend: "+err.Error())
+							} else {
+								err = bootstrap.SendMessage(w, "reset", nil)
+								if err != nil {
+									w.Log("[Bootstrap] Error sending reset message to frontend: "+err.Error())
+								}
 							}
-						}
-						return
+							return
+						},
 					},
+					{Role: astilectron.MenuItemRoleClose},
 				},
-			},
-		}},
-		OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
-			w = ws[0]
-			return nil
+			}},
+			OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
+				w = ws[0]
+				return nil
 		},
 		RestoreAssets: RestoreAssets,
 		Windows: []*bootstrap.Window{{

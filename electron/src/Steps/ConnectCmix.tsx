@@ -1,11 +1,14 @@
 import {
   Alert,
   AlertTitle,
+  Box,
   Button,
+  IconButton,
   Stack,
   styled,
   Typography,
 } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import { useCallback, useEffect, useState } from 'react'
 import Loading from '../Utils/loading'
 import { theme } from '../theme'
@@ -74,11 +77,15 @@ const connectToCmix = ({ connection }: PropsConnection) => (
 export const ConnectCmix = () => {
   const [connecting, setConnecting] = useState<Connection>('off')
   const [error, setError] = useState<string | null>(null)
+  const [about, setAbout] = useState<boolean>(false)
 
   useEffect(() => {
     global.astilectron.onMessage((message: Response) => {
       if (message.name === 'reset') {
         setConnecting('off')
+      }
+      if (message.name === 'about') {
+        setAbout(true)
       }
     })
   }, [setConnecting])
@@ -86,7 +93,6 @@ export const ConnectCmix = () => {
   const connect = useCallback(() => {
     setConnecting('connecting')
     global.astilectron.sendMessage({ name: 'connect' }, (resp: any) => {
-      // Error handling
       if (resp.name === 'error') {
         setError(resp.payload as string)
         setConnecting('off')
@@ -103,8 +109,46 @@ export const ConnectCmix = () => {
     })
   }, [setConnecting])
 
+  const handleClose = useCallback(() => {
+    setAbout(false)
+  }, [])
+
   return (
     <Stack alignItems={'center'}>
+      {about && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '350px',
+            border: '2px solid #00A2D6',
+            bgcolor: 'black',
+            borderRadius: 2,
+            boxShadow: 24,
+            padding: '1.25em 1.75em 1.5em',
+          }}
+        >
+          <Stack direction='row' justifyContent='space-between'>
+            <Typography
+              variant='h6'
+              component='h2'
+              sx={{ alignSelf: 'center' }}
+            >
+              About Proxxy App
+            </Typography>
+            <IconButton
+              size={'small'}
+              onClick={handleClose}
+              sx={{ margin: 0, padding: 0 }}
+            >
+              <CloseIcon sx={{ color: '#00A2D6' }} />
+            </IconButton>
+          </Stack>
+          <Typography sx={{ mt: 2 }}>It is absolutly amazing!</Typography>
+        </Box>
+      )}
       {connecting === 'off' ? (
         <Stack alignItems={'center'} spacing={4}>
           {error && (
