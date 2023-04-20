@@ -1,5 +1,5 @@
 import { Alert, Box, Stack, Typography } from '@mui/material'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import Loading from '../Utils/loading'
 import { theme } from '../theme'
 import {
@@ -30,8 +30,11 @@ export const CheckCmixConnection = ({
   connecting,
   setConnecting,
 }: Props) => {
+  const [error, setError] = useState<string | undefined>(undefined)
+
   const connect = useCallback(() => {
     setConnecting('connecting')
+    setError(undefined)
     setTimeout(() => {
       checkPort()
         .then((res) => {
@@ -40,6 +43,7 @@ export const CheckCmixConnection = ({
             next()
           } else {
             setConnecting('off')
+            setError(`Couldn't connect to Proxxy.`)
           }
         })
         .catch((e) => {
@@ -49,7 +53,7 @@ export const CheckCmixConnection = ({
   }, [setConnecting])
 
   return (
-    <Stack alignItems={'center'} sx={{ m: 5 }}>
+    <Stack alignItems={'center'}>
       {connecting === 'off' ? (
         <Stack alignItems={'center'} sx={{ width: '350px' }} spacing={4}>
           <Typography
@@ -61,6 +65,12 @@ export const CheckCmixConnection = ({
           <Box>
             <SquaredButtonContainer label={'Verify Connection'} callback={connect} />
           </Box>
+          {error !== undefined && (
+            <Alert variant='filled' severity='error'>
+              {error}
+              {' Please try again.'}
+            </Alert>
+          )}
         </Stack>
       ) : connecting === 'connecting' ? (
         <Stack alignItems={'center'} spacing={2}>
