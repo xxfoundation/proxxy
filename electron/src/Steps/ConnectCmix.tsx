@@ -6,7 +6,7 @@ import {
   styled,
   Typography,
 } from '@mui/material'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Loading from '../Utils/loading'
 import { theme } from '../theme'
 
@@ -61,8 +61,10 @@ const connectToCmix = ({ connection }: PropsConnection) => (
           Welcome to Proxxy
         </AlertTitle>
         <Typography variant='body4' fontWeight={700}>
-          This app will protect your privacy while transacting with supported blockchain networks. <br />
-          Press the Start button to connect to the cMix network and begin using Proxxy.
+          This app will protect your privacy while transacting with supported
+          blockchain networks. <br />
+          Press the Start button to connect to the cMix network and begin using
+          Proxxy.
         </Typography>
       </Alert>
     )}
@@ -71,38 +73,45 @@ const connectToCmix = ({ connection }: PropsConnection) => (
 
 export const ConnectCmix = () => {
   const [connecting, setConnecting] = useState<Connection>('off')
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    global.astilectron.onMessage((message: Response) => {
+      if (message.name === 'reset') {
+        setConnecting('off')
+      }
+    })
+  }, [setConnecting])
 
   const connect = useCallback(() => {
     setConnecting('connecting')
-    process.env.NODE_ENV !== 'production'
-      ? setTimeout(() => {
-          setConnecting('on')
-        }, 1000)
-      : global.astilectron.sendMessage(
-          { name: 'connect' },
-          (resp: any) => {
-            setConnecting('on')
-          }
-        )
+    global.astilectron.sendMessage({ name: 'connect' }, (resp: any) => {
+      // Error handling
+      if (resp.name === 'error') {
+        setError(resp.payload as string)
+        setConnecting('off')
+        return
+      }
+      setConnecting('on')
+      setError(null)
+    })
   }, [setConnecting])
 
   const disconnect = useCallback(() => {
-    process.env.NODE_ENV !== 'production'
-      ? setTimeout(() => {
-          setConnecting('off')
-        }, 1000)
-      : global.astilectron.sendMessage(
-          { name: 'disconnect' },
-          () => {
-            setConnecting('off')
-          }
-        )
+    global.astilectron.sendMessage({ name: 'disconnect' }, () => {
+      setConnecting('off')
+    })
   }, [setConnecting])
 
   return (
     <Stack alignItems={'center'}>
       {connecting === 'off' ? (
         <Stack alignItems={'center'} spacing={4}>
+          {error && (
+            <Alert variant={'outlined'} severity={'error'}>
+              {error}
+            </Alert>
+          )}
           {connectToCmix({ connection: connecting })}
           <RoundedButton variant={'contained'} onClick={connect}>
             <Stack
@@ -143,7 +152,8 @@ export const ConnectCmix = () => {
               color: theme.palette.primary.contrastText,
             }}
           >
-            Head to <b>proxxy.xx.network</b> to connect Proxxy to MetaMask and select a network
+            Head to <b>proxxy.xx.network</b> to connect Proxxy to MetaMask and
+            select a network
           </Alert>
           <RoundedButton variant={'contained'} onClick={disconnect}>
             <Stack

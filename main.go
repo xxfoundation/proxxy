@@ -41,6 +41,14 @@ func main() {
 	// New handler
 	handler := backend.NewHandler(config)
 
+	// About message
+	htmlAbout := `
+		<div style="text-align: center;">
+			<h1>Cmix Proxy</h1>
+			<p>Best proxy ever!</p>
+		</div>
+	`
+
 	// Run bootstrap
 	jww.INFO.Printf("Running app built at %s\n", BuiltAt)
 	if err := bootstrap.Run(bootstrap.Options{
@@ -58,8 +66,52 @@ func main() {
 		Logger: jww.DEBUG,
 		MenuOptions: []*astilectron.MenuItemOptions{{
 			Label: astikit.StrPtr("File"),
+			SubLabel: astikit.StrPtr("File"),
 			SubMenu: []*astilectron.MenuItemOptions{
 				{Role: astilectron.MenuItemRoleClose},
+				{   // Add dev tools menu item
+					Label: astikit.StrPtr("Dev Tools"),
+					OnClick: func(e astilectron.Event) (deleteListener bool) {
+						w.OpenDevTools()
+						return
+					},
+				},
+				{   // Add about menu item
+					Label: astikit.StrPtr("About"),
+					OnClick: func(e astilectron.Event) (deleteListener bool) {
+						bootstrap.SendMessage(w, "about", htmlAbout)
+						return
+					},
+				},
+				{	// Add restore window menu item
+					Label: astikit.StrPtr("Reset App"),
+					OnClick: func(e astilectron.Event) (deleteListener bool) {
+						// Create bootstrap messages
+						msgDisconnect := bootstrap.MessageIn{
+							Name: "disconnect",
+						}
+						msgReset := bootstrap.MessageIn{
+							Name: "reset",
+						}
+
+						w.Log("Sending message: "+msgDisconnect.Name)
+						_, err := handler.HandleMessages(w, msgDisconnect)
+						if err != nil {
+							w.Log("[Disconnect] Error message: "+err.Error())
+						}
+						w.Log("Sending message: "+msgReset.Name)
+						_, err = handler.HandleMessages(w, msgReset)
+						if err != nil {
+							w.Log("[Reset] Error message: "+err.Error())
+						} else {
+							err = bootstrap.SendMessage(w, "reset", nil)
+							if err != nil {
+								w.Log("[Bootstrap] Error sending reset message to frontend: "+err.Error())
+							}
+						}
+						return
+					},
+				},
 			},
 		}},
 		OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
