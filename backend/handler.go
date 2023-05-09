@@ -44,16 +44,17 @@ func (h *Handler) HandleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (
 			NdfUrl:        h.config.NdfUrl,
 			StatePath:     h.config.StatePath,
 			StatePassword: "",
-			ContactFile:   h.config.ContactFile,
+			ServerContacts: []api.ServerInfo{
+				{
+					ContactFile: h.config.ContactFile,
+					Name:        "testnets",
+				},
+			},
 		}
 		h.apiInstance = api.NewApi(config)
 
 		// Connect API
-		err = h.apiInstance.Connect()
-		if err != nil {
-			jww.ERROR.Printf("Failed to connect: %+v", err)
-			return err.Error(), err
-		}
+		h.apiInstance.Connect()
 
 		// Create HTTP server
 		h.proxy = api.NewHttpProxy(h.apiInstance, h.config.Port, h.config.LogPrefix)
