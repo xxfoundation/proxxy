@@ -18,7 +18,7 @@ export const Connected = (
   </Alert>
 )
 
-const connectCmixInfo = `Open the Proxxy app and connect to cMix. Use the button below to verify Proxxy is active, and then click Next to proceed.`
+const connectCmixInfo = `Open the Proxxy App and connect to cMix. Use the button below to verify Proxxy is active, and then click NEXT to proceed.`
 
 interface Props {
   next: () => void

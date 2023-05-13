@@ -4,7 +4,7 @@ import { CheckCmixConnection, Connection } from '../Steps/CheckCmixConnection'
 import { ConnectWallet } from '../Steps/ConnectWallet'
 import { SelectNetworks } from '../Steps/SelectNetworks'
 import { theme } from '../theme'
-import { DownloadApp } from '../Steps/DownloadApp'
+import { WikiPage } from '../Steps/WikiPage'
 
 interface Props {
   step: number
@@ -47,7 +47,7 @@ export const StepContent = ({ step, maxSteps, next, back }: Props) => {
 
   return (
     <Stack alignItems={'center'} spacing={4} width={'95%'} padding={2}>
-      {step === 0 && <DownloadApp />}
+      {step === 0 && <WikiPage />}
       {step === 1 && (
         <CheckCmixConnection
           next={next}

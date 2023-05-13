@@ -64,9 +64,10 @@ export const DownloadApp = () => {
       <Typography variant='body3' sx={{ textAlign: 'justify', color: 'white' }}>
         {downloadInfo}
       </Typography>
-      <Box>
+      <Stack direction={'row'} spacing={2} justifyContent={'center'}>
+        <SquaredButtonContainer label={'Wiki Page'} callback={download} />
         <SquaredButtonContainer label={'Download'} callback={download} />
-      </Box>
+      </Stack>
       {error && (
         <Alert severity='error'>Your operating system is not supported</Alert>
       )}
