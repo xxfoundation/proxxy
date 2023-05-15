@@ -17,7 +17,7 @@ declare global {
   var astilectron: any
 }
 
-type Connection = 'off' | 'connecting' | 'on'
+type Connection = 'off' | 'connecting' | 'on' | 'disconnecting'
 interface Response {
   name: string
   payload: any
@@ -104,6 +104,7 @@ export const ConnectCmix = () => {
   }, [setConnecting])
 
   const disconnect = useCallback(() => {
+    setConnecting('disconnecting')
     global.astilectron.sendMessage({ name: 'disconnect' }, () => {
       setConnecting('off')
     })
@@ -179,6 +180,17 @@ export const ConnectCmix = () => {
             sx={{ color: theme.palette.text.primary }}
           >
             Connecting to cMix...
+          </Typography>
+          <Loading size='md' />
+        </Stack>
+      ) : connecting === 'disconnecting' ?
+      (
+        <Stack alignItems={'center'} spacing={2}>
+          <Typography
+            variant='body2'
+            sx={{ color: theme.palette.text.primary }}
+          >
+            Disconnecting from cMix...
           </Typography>
           <Loading size='md' />
         </Stack>

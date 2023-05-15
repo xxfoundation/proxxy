@@ -16,12 +16,8 @@ import (
 type Config struct {
 	// Dir for app data: log file and cMix state
 	DataDir string
-	// Dir containing app resources
-	ResourcesDir string
 	// Logging prefix (RELAY)
 	LogPrefix string
-	// Contact file name
-	ContactFile string
 	// Mainnet cert file name
 	CertFile string
 	// NDF URL
@@ -56,17 +52,15 @@ func DefaultConfig(appname string) Config {
 		fmt.Printf("Error getting current path: %s\n", err)
 		panic(1)
 	}
-	resources := path.Join(filepath.Dir(ex), "resources", "cmix")
+	resources := path.Join(filepath.Dir(ex), "resources")
 	return Config{
-		DataDir:      datadir,
-		ResourcesDir: resources,
-		LogPrefix:    "RELAY",
-		ContactFile:  path.Join(resources, "relay.xxc"),
-		CertFile:     path.Join(resources, "mainnet.crt"),
-		NdfUrl:       "https://elixxir-bins.s3.us-west-1.amazonaws.com/ndf/mainnet.json",
-		StatePath:    path.Join(datadir, "state"),
-		Retries:      5,
-		Port:         9296,
+		DataDir:   datadir,
+		LogPrefix: "RELAY",
+		CertFile:  path.Join(resources, "mainnet.crt"),
+		NdfUrl:    "https://elixxir-bins.s3.us-west-1.amazonaws.com/ndf/mainnet.json",
+		StatePath: path.Join(datadir, "state"),
+		Retries:   5,
+		Port:      9296,
 	}
 }
 

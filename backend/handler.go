@@ -1,8 +1,12 @@
 package backend
 
 import (
+	"bufio"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"sync"
 
@@ -36,20 +40,18 @@ func (h *Handler) HandleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (
 			return err.Error(), err
 		}
 
+		// Get contact data for relay servers
+		servers := GetRelayServers()
+
 		// Create API
 		config := api.Config{
-			LogPrefix:     h.config.LogPrefix,
-			Retries:       h.config.Retries,
-			Cert:          h.config.CertFile,
-			NdfUrl:        h.config.NdfUrl,
-			StatePath:     h.config.StatePath,
-			StatePassword: "",
-			ServerContacts: []api.ServerInfo{
-				{
-					ContactFile: h.config.ContactFile,
-					Name:        "testnets",
-				},
-			},
+			LogPrefix:      h.config.LogPrefix,
+			Retries:        h.config.Retries,
+			Cert:           h.config.CertFile,
+			NdfUrl:         h.config.NdfUrl,
+			StatePath:      h.config.StatePath,
+			StatePassword:  "",
+			ServerContacts: servers,
 		}
 		h.apiInstance = api.NewApi(config)
 
@@ -121,4 +123,55 @@ func (h *Handler) HandleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (
 		jww.WARN.Printf("Received unknown message type: %s", m.Name)
 	}
 	return nil, err
+}
+
+const relayContactFileURL = "https://nx38767.your-storageshare.de/s/8PTGRzoHtxNpHZy/download/relays.xxc"
+
+func readLinesFromBytes(reader io.Reader) ([][]byte, error) {
+	// Create a new scanner to read the slice of bytes line by line
+	scanner := bufio.NewScanner(reader)
+
+	// Create a slice to store the lines of the slice of bytes
+	var lines [][]byte
+
+	// Loop through the lines of the slice of bytes
+	for scanner.Scan() {
+		// Append the line to the slice of lines
+		lines = append(lines, scanner.Bytes())
+	}
+
+	// Check for any errors that may have occurred while scanning the slice of bytes
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of lines
+	return lines, nil
+}
+
+func GetRelayServers() []api.ServerInfo {
+	// Download relay contact file
+	url := relayContactFileURL
+	resp, err := http.Get(url)
+	if err != nil {
+		jww.ERROR.Printf("Failed to download contact file: %s", err)
+		return nil
+	}
+	defer resp.Body.Close()
+	// Read the file data
+	data, err := readLinesFromBytes(resp.Body)
+	if err != nil {
+		jww.ERROR.Printf("Failed to read contact file: %s", err)
+		return nil
+	}
+	// Unmarshal the data
+	servers := make([]api.ServerInfo, len(data))
+	for i, line := range data {
+		contact := api.UnmarshalContact(line)
+		servers[i] = api.ServerInfo{
+			Contact: contact,
+			Name:    fmt.Sprintf("relay-%d", i),
+		}
+	}
+	return servers
 }
