@@ -1,4 +1,4 @@
-module github.com/bitfashioned/cmix-proxy-app
+module github.com/xx-labs/cmix-proxy-app
 
 go 1.19
 

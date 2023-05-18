@@ -110,7 +110,7 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "bitfashioned",
+      "owner": "xx-labs",
       "repo": "cmix-proxxy-app"
     }
   }
