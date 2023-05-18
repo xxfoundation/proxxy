@@ -7,7 +7,7 @@ require (
 	github.com/asticode/go-astilectron v0.29.0
 	github.com/asticode/go-astilectron-bootstrap v0.4.14
 	github.com/spf13/jwalterweatherman v1.1.0
-	github.com/xx-labs/blockchain-cmix-relay/client v0.0.0-20230518202429-b847d8bcf492
+	github.com/xx-labs/blockchain-cmix-relay/client v0.0.0-20230518225732-80a2c5fc550a
 )
 
 require (
