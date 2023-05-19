@@ -18,6 +18,8 @@ declare global {
 }
 
 type Connection = 'off' | 'connecting' | 'on' | 'disconnecting'
+type ResetState = 'off' | 'resetting' | 'on'
+
 interface Response {
   name: string
   payload: any
@@ -78,17 +80,25 @@ export const ConnectCmix = () => {
   const [connecting, setConnecting] = useState<Connection>('off')
   const [error, setError] = useState<string | null>(null)
   const [about, setAbout] = useState<boolean>(false)
+  const [reset, setReset] = useState<ResetState>('off')
 
   useEffect(() => {
     global.astilectron.onMessage((message: Response) => {
+      if (message.name === 'resetting') {
+        if (connecting !== 'off') {
+          setConnecting('disconnecting')
+        }
+        setReset('resetting')
+      }
       if (message.name === 'reset') {
         setConnecting('off')
+        setReset('on')
       }
       if (message.name === 'about') {
         setAbout(true)
       }
     })
-  }, [setConnecting])
+  }, [])
 
   const connect = useCallback(() => {
     setConnecting('connecting')
@@ -112,6 +122,10 @@ export const ConnectCmix = () => {
 
   const handleClose = useCallback(() => {
     setAbout(false)
+  }, [])
+
+  const handleResetDone = useCallback(() => {
+    setReset('off')
   }, [])
 
   return (
@@ -150,83 +164,130 @@ export const ConnectCmix = () => {
           <Typography sx={{ mt: 2 }}>It is absolutly amazing!</Typography>
         </Box>
       )}
-      {connecting === 'off' ? (
-        <Stack alignItems={'center'} spacing={4}>
-          {error && (
-            <Alert variant={'outlined'} severity={'error'}>
-              {error}
-            </Alert>
-          )}
-          {connectToCmix({ connection: connecting })}
-          <RoundedButton variant={'contained'} onClick={connect}>
-            <Stack
-              sx={{ alignItems: 'center' }}
-              direction={'column'}
-              spacing={1}
-            >
+      {reset !== 'off' ?
+        (reset === 'resetting' ?
+          (
+            <Stack alignItems={'center'} spacing={2}>
               <Typography
-                variant='body3'
-                sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+                variant='body2'
+                sx={{ color: theme.palette.text.primary }}
               >
-                Start
+                App Resetting...
               </Typography>
+              <Loading size='md' />
             </Stack>
-          </RoundedButton>
-        </Stack>
-      ) : connecting === 'connecting' ? (
-        <Stack alignItems={'center'} spacing={2}>
-          <Typography
-            variant='body2'
-            sx={{ color: theme.palette.text.primary }}
-          >
-            Connecting to cMix...
-          </Typography>
-          <Loading size='md' />
-        </Stack>
-      ) : connecting === 'disconnecting' ?
-      (
-        <Stack alignItems={'center'} spacing={2}>
-          <Typography
-            variant='body2'
-            sx={{ color: theme.palette.text.primary }}
-          >
-            Disconnecting from cMix...
-          </Typography>
-          <Loading size='md' />
-        </Stack>
-      ) : (
-        <Stack alignItems={'center'} spacing={3}>
-          {connectToCmix({ connection: connecting })}
-          <Alert
-            variant={'outlined'}
-            severity={'info'}
-            sx={{
-              width: '80%',
-              fontSize: '12px',
-              textAlign: 'left',
-              padding: '4px 8px',
-              color: theme.palette.primary.contrastText,
-            }}
-          >
-            Head to <b>proxxy.xx.network</b> to connect Proxxy to MetaMask and
-            select a network
-          </Alert>
-          <RoundedButton variant={'contained'} onClick={disconnect}>
-            <Stack
-              sx={{ alignItems: 'center' }}
-              direction={'column'}
-              spacing={1}
-            >
+          )
+          :
+          (
+            <Stack alignItems={'center'} spacing={4}>
+              <Alert
+                severity='success'
+                variant='filled'
+                sx={{ padding: '4px 10px', mb: 1 }}
+              >
+                <Typography variant='body4' fontWeight={700}>
+                  Reset complete!
+                </Typography>
+              </Alert>
+              <RoundedButton variant={'contained'} onClick={handleResetDone}>
+                <Stack
+                  sx={{ alignItems: 'center' }}
+                  direction={'column'}
+                  spacing={1}
+                >
+                  <Typography
+                    variant='body3'
+                    sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+                  >
+                    Done
+                  </Typography>
+                </Stack>
+              </RoundedButton>
+            </Stack>
+          )
+        )
+        :
+        (
+          connecting === 'off' ?
+          (
+            <Stack alignItems={'center'} spacing={4}>
+              {error && (
+                <Alert variant={'outlined'} severity={'error'}>
+                  {error}
+                </Alert>
+              )}
+              {connectToCmix({ connection: connecting })}
+              <RoundedButton variant={'contained'} onClick={connect}>
+                <Stack
+                  sx={{ alignItems: 'center' }}
+                  direction={'column'}
+                  spacing={1}
+                >
+                  <Typography
+                    variant='body3'
+                    sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+                  >
+                    Start
+                  </Typography>
+                </Stack>
+              </RoundedButton>
+            </Stack>
+          ) : connecting === 'connecting' ? (
+            <Stack alignItems={'center'} spacing={2}>
               <Typography
-                variant='body3'
-                sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+                variant='body2'
+                sx={{ color: theme.palette.text.primary }}
               >
-                Stop
+                Connecting to cMix...
               </Typography>
+              <Loading size='md' />
             </Stack>
-          </RoundedButton>
-        </Stack>
-      )}
+          ) : connecting === 'disconnecting' ?
+          (
+            <Stack alignItems={'center'} spacing={2}>
+              <Typography
+                variant='body2'
+                sx={{ color: theme.palette.text.primary }}
+              >
+                Disconnecting from cMix...
+              </Typography>
+              <Loading size='md' />
+            </Stack>
+          ) : (
+            <Stack alignItems={'center'} spacing={3}>
+              {connectToCmix({ connection: connecting })}
+              <Alert
+                variant={'outlined'}
+                severity={'info'}
+                sx={{
+                  width: '80%',
+                  fontSize: '12px',
+                  textAlign: 'left',
+                  padding: '4px 8px',
+                  color: theme.palette.primary.contrastText,
+                }}
+              >
+                Head to <b>proxxy.xx.network</b> to connect Proxxy to MetaMask and
+                select a network
+              </Alert>
+              <RoundedButton variant={'contained'} onClick={disconnect}>
+                <Stack
+                  sx={{ alignItems: 'center' }}
+                  direction={'column'}
+                  spacing={1}
+                >
+                  <Typography
+                    variant='body3'
+                    sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+                  >
+                    Stop
+                  </Typography>
+                </Stack>
+              </RoundedButton>
+            </Stack>
+          )
+        )
+      }
     </Stack>
   )
 }

@@ -1,9 +1,6 @@
 package main
 
 import (
-	"flag"
-	"os"
-
 	"github.com/asticode/go-astikit"
 	"github.com/asticode/go-astilectron"
 	bootstrap "github.com/asticode/go-astilectron-bootstrap"
@@ -21,17 +18,12 @@ var (
 
 // Application Vars
 var (
-	flags     = flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
-	debug     = flags.Bool("d", false, "enables the debug mode")
 	w         *astilectron.Window
 	resources string
 	appdata   string
 )
 
 func main() {
-	// Parse flags
-	flags.Parse(os.Args[1:])
-
 	// Get backend config
 	config := backend.DefaultConfig(AppName)
 
@@ -54,7 +46,6 @@ func main() {
 			VersionAstilectron: VersionAstilectron,
 			VersionElectron:    VersionElectron,
 		},
-		Debug:  *debug,
 		Logger: jww.DEBUG,
 		MenuOptions: []*astilectron.MenuItemOptions{{
 			Label:    astikit.StrPtr("File"),
@@ -67,17 +58,10 @@ func main() {
 						return
 					},
 				},
-				{ // Add dev tools menu item
-					Label: astikit.StrPtr("Dev Tools"),
-					OnClick: func(e astilectron.Event) (deleteListener bool) {
-						w.OpenDevTools()
-						return
-					},
-				},
 				{ // Add restore window menu item
 					Label: astikit.StrPtr("Reset App"),
 					OnClick: func(e astilectron.Event) (deleteListener bool) {
-						// Create bootstrap messages
+						// Create backend messages
 						msgDisconnect := bootstrap.MessageIn{
 							Name: "disconnect",
 						}
@@ -85,19 +69,25 @@ func main() {
 							Name: "reset",
 						}
 
-						w.Log("Sending message: " + msgDisconnect.Name)
-						_, err := handler.HandleMessages(w, msgDisconnect)
+						// Notify frontend that reset is happening
+						err := bootstrap.SendMessage(w, "resetting", nil)
 						if err != nil {
-							w.Log("[Disconnect] Error message: " + err.Error())
+							jww.DEBUG.Printf("[Bootstrap] Error sending resetting message to frontend: %s", err.Error())
 						}
-						w.Log("Sending message: " + msgReset.Name)
+
+						// Disconnect and reset
+						_, err = handler.HandleMessages(w, msgDisconnect)
+						if err != nil {
+							jww.DEBUG.Printf("[Disconnect] Error message: %s", err.Error())
+						}
 						_, err = handler.HandleMessages(w, msgReset)
 						if err != nil {
-							w.Log("[Reset] Error message: " + err.Error())
+							jww.DEBUG.Printf("[Reset] Error message: %s", err.Error())
 						} else {
+							// Notify frontend that reset is complete
 							err = bootstrap.SendMessage(w, "reset", nil)
 							if err != nil {
-								w.Log("[Bootstrap] Error sending reset message to frontend: " + err.Error())
+								jww.DEBUG.Printf("[Bootstrap] Error sending reset message to frontend: %s", err.Error())
 							}
 						}
 						return
