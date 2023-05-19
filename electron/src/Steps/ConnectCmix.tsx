@@ -161,7 +161,7 @@ export const ConnectCmix = () => {
               <CloseIcon sx={{ color: '#00A2D6' }} />
             </IconButton>
           </Stack>
-          <Typography sx={{ mt: 2 }}>It is absolutly amazing!</Typography>
+          <Typography sx={{ mt: 2 }}>Visit <b>xxnetwork.wiki/Proxxy</b> to learn more.</Typography>
         </Box>
       )}
       {reset !== 'off' ?
