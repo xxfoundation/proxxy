@@ -21,18 +21,23 @@ interface Props {
 
 export const ExpandItem: React.FC<Props> = ({ title, children, expanded, setExpanded }) => {
   return (
-    <Stack alignSelf={'baseline'}>
+    <Stack alignSelf={'baseline'} sx={{minWidth: 'inherit'}}>
       <ListItemButton
         onClick={setExpanded}
         sx={{
           p: 1,
-          borderRadius: '10px 10px 0 0',
-          color: theme.palette.primary.main,
+          border: '1px inset white',
+          borderRadius: expanded ? '10px 10px 0 0' : '10px',
+          color: 'white',
+          backgroundColor: expanded ? theme.palette.primary.main + '90' : '',
+          "&:hover": {
+            backgroundColor: theme.palette.primary.main + '90',
+          },
         }}
       >
         <ListItemText
           primary={
-            <Typography variant='h5' sx={{ color: theme.palette.primary.main }}>
+            <Typography variant='h5' sx={{ color: 'white' }}>
               {title}
             </Typography>
           }
@@ -45,12 +50,13 @@ export const ExpandItem: React.FC<Props> = ({ title, children, expanded, setExpa
         unmountOnExit
         sx={{
           maxHeight: '300px',
+          minWidth: 'inherit', 
           overflowY: 'scroll',
           textAlign: 'justify',
           pb: 1,
-          px: 1,
+          border: '2px inset white',
           borderRadius: '0 0 10px 10px',
-          backgroundImage: `linear-gradient(to bottom, #242424,#242424,#242424,#242424,#242424,#242424,#242424,#242424,#242424,#4f4f4f)`,
+          backgroundImage: `linear-gradient(to bottom, #242424,#242424,#242424,#242424,#242424,#242424,#242424,#242424,#242424, ${theme.palette.primary.main + '90'})`,
         }}
       >
         {children}
