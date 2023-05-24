@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { styled } from '@mui/material/styles'
-import { Stack, Stepper, Step } from '@mui/material'
+import { Stepper, Step } from '@mui/material'
 import StepConnector, {
   stepConnectorClasses,
 } from '@mui/material/StepConnector'
@@ -8,14 +8,14 @@ import StepLabel, { stepLabelClasses } from '@mui/material/StepLabel'
 
 const CustomizedConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 10,
-    left: 'calc(-50% + 16px)',
-    right: 'calc(50% + 16px)',
+    top: 12,
+    left: 'calc(-50% + 19px)',
+    right: 'calc(50% + 19px)',
   },
   [`& .${stepConnectorClasses.line}`]: {
     borderColor: theme.palette.primary.main,
-    borderTopWidth: 3,
-    borderRadius: 1,
+    borderTopWidth: 3.6,
+    borderRadius: 1.2,
   },
 }))
 
@@ -47,7 +47,7 @@ export default function CustomizedSteppers({
       connector={<CustomizedConnector />}
     >
       {steps.map((label) => (
-        <Step key={label} sx={{ width: '100px' }}>
+        <Step key={label} sx={{ width: '120px' }}>
           <CustomizedLabel>{label}</CustomizedLabel>
         </Step>
       ))}

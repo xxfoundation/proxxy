@@ -25,7 +25,7 @@ export const WikiPage = () => {
   }, [])
 
   return (
-    <Stack direction={'column'} sx={{ width: '350px' }} spacing={4}>
+    <Stack direction={'column'} sx={{ width: '420px' }} spacing={4}>
       <Typography variant='body3' sx={{ textAlign: 'justify', color: 'white' }}>
         {wikiInfo}
       </Typography>

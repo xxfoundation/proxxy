@@ -8,12 +8,12 @@ function App() {
     <div className='App'>
       <Container
         sx={{
-          maxWidth: '800px',
-          maxHeight: '1600px',
+          maxWidth: '960px',
+          maxHeight: '1920px',
         }}
       >
         <Box margin={2}>
-          <img width='200' alt='icon' src={icon} />
+          <img width='240' alt='icon' src={icon} />
         </Box>
         <Hello />
       </Container>

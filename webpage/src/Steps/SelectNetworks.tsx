@@ -14,7 +14,7 @@ import { Network } from '../Utils/utils'
 import { Networks, Testnets } from '../Utils/networks'
 import SyncIcon from '@mui/icons-material/Sync'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { ExpandItem } from '../Components/ExpandItem'
 import useToggle from '../hooks/useToggle'
 

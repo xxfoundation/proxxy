@@ -1,5 +1,5 @@
 import { Alert, Stack, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ConnectMetamask } from '../Components/ConnectMetamask'
 import { Connected } from './CheckCmixConnection'
 
@@ -20,7 +20,7 @@ export const ConnectWallet = ({ setWalletConnected }: Props) => {
         />
       ) : (
         <Stack alignItems={'center'} spacing={1}>
-          <Alert variant='filled' sx={{ padding: '4px 10px', mb: 1 }}>
+          <Alert variant='filled' sx={{ padding: '5px 12px', mb: 1.2 }}>
             <Typography variant='body4' fontWeight={700}>
               Wallet Connected!
               <br />

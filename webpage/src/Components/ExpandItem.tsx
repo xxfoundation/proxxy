@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import {
   Typography,
   Collapse,
@@ -25,9 +25,9 @@ export const ExpandItem: React.FC<Props> = ({ title, children, expanded, setExpa
       <ListItemButton
         onClick={setExpanded}
         sx={{
-          p: 1,
-          border: '1px inset white',
-          borderRadius: expanded ? '10px 10px 0 0' : '10px',
+          p: 1.2,
+          border: '2px inset white',
+          borderRadius: expanded ? '12px 12px 0 0' : '12px',
           color: 'white',
           backgroundColor: expanded ? theme.palette.primary.main + '90' : '',
           "&:hover": {
@@ -37,7 +37,7 @@ export const ExpandItem: React.FC<Props> = ({ title, children, expanded, setExpa
       >
         <ListItemText
           primary={
-            <Typography variant='h5' sx={{ color: 'white' }}>
+            <Typography variant='h5' sx={{ color: 'white', paddingLeft: 1.2 }}>
               {title}
             </Typography>
           }

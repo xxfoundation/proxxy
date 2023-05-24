@@ -4,14 +4,13 @@ import Loading from '../Utils/loading'
 import { theme } from '../theme'
 import {
   checkPort,
-  RoundedButtonContainer,
   SquaredButtonContainer,
 } from '../Utils/utils'
 
 export type Connection = 'off' | 'connecting' | 'on'
 
 export const Connected = (
-  <Alert variant='filled' sx={{ padding: '4px 10px', mb: 1 }}>
+  <Alert variant='filled' sx={{ padding: '5px 12px', mb: 1.2 }}>
     <Typography variant='body4' fontWeight={700}>
       Proxxy Connected!
     </Typography>
@@ -55,7 +54,7 @@ export const CheckCmixConnection = ({
   return (
     <Stack alignItems={'center'}>
       {connecting === 'off' ? (
-        <Stack alignItems={'center'} sx={{ width: '350px' }} spacing={4}>
+        <Stack alignItems={'center'} sx={{ width: '420px' }} spacing={4}>
           <Typography
             variant='body3'
             sx={{ textAlign: 'justify', color: 'white' }}

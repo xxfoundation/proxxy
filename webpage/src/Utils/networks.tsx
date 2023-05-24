@@ -41,7 +41,7 @@ export const Networks: Network[] = [
     chainId: 592,
     symbol: 'ASTR',
     rpc: `${baseRPC}/astar/mainnet`,
-    icon: 'https://raw.githubusercontent.com/AstarNetwork/brand-assets/main/Astar%20Identity/logo/Astar_ring.png',
+    icon: 'https://raw.githubusercontent.com/AstarNetwork/brand-assets/main/Astar%20Identity/logo/symbol/Astar_ring.png',
   },
   // Moonbeam
   {
