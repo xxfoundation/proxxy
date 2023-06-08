@@ -120,16 +120,16 @@ export const SelectNetworks = ({ next }: Props) => {
   }, [])
 
   return (
-    <Stack alignItems={'center'}>
+    <Stack alignItems={'center'} sx={{ minWidth: '98%' }}>
       {Networks.length === 0 ? (
         <Typography variant='body2' sx={{ color: theme.palette.text.primary }}>
           No networks found
         </Typography>
       ) : (
-          <Stack alignItems={'center'} spacing={2}>
+          <Stack alignItems={'center'} spacing={2} sx={{ minWidth: 'inherit' }}>
             <ExpandItem title={'Supported Networks'} children={
               <TableContainer>
-                <Table sx={{ width: '400px', overflowY: 'scroll' }} aria-label='Supported Networks Table'>
+                <Table sx={{ overflowY: 'scroll' }} aria-label='Supported Networks Table'>
                   <TableBody>
                     {Object.values(Networks).map((network: Network) => (
                       <TableRow key={network.name}>
@@ -167,7 +167,7 @@ export const SelectNetworks = ({ next }: Props) => {
             />
             <ExpandItem title={'Supported Testnets'} children={
               <TableContainer>
-                <Table sx={{ width: '400px', overflowY: 'scroll' }} aria-label='Supported Testnets Table'>
+                <Table sx={{ overflowY: 'scroll' }} aria-label='Supported Testnets Table'>
                   <TableBody>
                     {Object.values(Testnets).map((network: Network) => (
                       <TableRow key={network.name}>

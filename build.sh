@@ -6,6 +6,7 @@ npm run build:renderer
 popd
 rm -rf resources/app
 rm -f bind_*
+rm -f windows.syso
 rm -rf output/*
 cp -r electron/release/app/dist/renderer resources/app
 astilectron-bundler

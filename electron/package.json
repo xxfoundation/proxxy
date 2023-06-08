@@ -1,6 +1,6 @@
 {
   "name": "proxxy-app",
-  "description": "cmix proxxy app made by for xx foundation",
+  "description": "xx network Proxxy",
   "private": true,
   "version": "0.0.0",
   "main": "./src/main/main.ts",
@@ -51,8 +51,8 @@
     "webpack-dev-server": "^4.11.1"
   },
   "build": {
-    "productName": "cmix Proxxy",
-    "appId": "org.erb.cmixProxxy",
+    "productName": "xx network Proxxy",
+    "appId": "org.erb.xxnetworkProxxy",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -110,7 +110,7 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "bitfashioned",
+      "owner": "xx-labs",
       "repo": "cmix-proxxy-app"
     }
   }
