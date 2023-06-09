@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { useCallback, useEffect, useState } from 'react'
-import Loading from '../Utils/loading'
+import Loading from './loading'
 import { theme } from '../theme'
 
 declare global {
@@ -143,13 +143,14 @@ export const ConnectCmix = () => {
             borderRadius: 2,
             boxShadow: 24,
             padding: '1.25em 1.75em 1.5em',
+            zIndex: 100,
           }}
         >
           <Stack direction='row' justifyContent='space-between'>
             <Typography
-              variant='h6'
+              variant='h5'
               component='h2'
-              sx={{ alignSelf: 'center' }}
+              sx={{ alignSelf: 'center', color: theme.palette.primary.main }}
             >
               About Proxxy App
             </Typography>

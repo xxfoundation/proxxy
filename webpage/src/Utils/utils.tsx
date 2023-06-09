@@ -36,14 +36,15 @@ export const RoundedButtonContainer = (label: string, callback: () => void) => (
 )
 
 const SquaredButton = styled(Button)(({ theme }) => ({
-  border: `2px solid ${theme.palette.primary.main}`,
-  boxShadow: `0px 0px 7px ${theme.palette.primary.main}`,
-  borderRadius: '10px',
+  border: `2.4px solid ${theme.palette.primary.main}`,
+  boxShadow: `0px 0px 8.4px ${theme.palette.primary.main}`,
+  borderRadius: '12px',
   background: 'none',
   alignContent: 'center',
+  padding: '0.45rem 1.2rem',
   [`&:hover`]: {
     backgroundColor: theme.palette.primary.main + '30',
-    border: `2px solid ${theme.palette.primary.main}`,
+    border: `2.4px solid ${theme.palette.primary.main}`,
   },
 }))
 

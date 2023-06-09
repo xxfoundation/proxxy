@@ -42,83 +42,99 @@ export const theme = createTheme({
         },
       },
     },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          "& .MuiAlert-icon": {
+            fontSize: 26,
+          },
+        },
+      },
+    },
+    MuiStepIcon: {
+      styleOverrides: {
+        root: {
+          fontSize: 26,
+        },
+      },
+    },
   },
   palette,
   typography: {
     fontFamily: "'Roboto', sans-serif",
     h1: {
-      fontSize: 46,
-      fontWeight: 800,
+      fontSize: 55,
+      fontWeight: 960,
       color: palette.grey[700],
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
       overflow: 'hidden',
     },
     h2: {
-      fontSize: 36,
-      fontWeight: 700,
+      fontSize: 43,
+      fontWeight: 840,
     },
     h3: {
-      fontSize: 16,
-      fontWeight: 700,
+      fontSize: 19,
+      fontWeight: 840,
       letterSpacing: 1.5,
       textTransform: 'uppercase',
       color: palette.grey[600],
     },
     h4: {
-      fontSize: 14,
-      fontWeight: 500,
+      fontSize: 17,
+      fontWeight: 600,
       letterSpacing: 0.5,
       textTransform: 'uppercase',
     },
     h5: {
-      fontSize: 12,
-      fontWeight: 700,
+      fontSize: 14,
+      fontWeight: 840,
       textTransform: 'uppercase',
     },
     h6: {
-      fontSize: 13,
-      fontWeight: 700,
+      fontSize: 16,
+      fontWeight: 840,
       letterSpacing: 1.5,
       color: palette.grey[500],
       textTransform: 'uppercase',
     },
     subheader4: {
-      fontSize: 14,
-      fontWeight: 400,
+      fontSize: 17,
+      fontWeight: 480,
       letterSpacing: 0.5,
       textTransform: 'uppercase',
       color: palette.grey[400],
     },
     body1: {
-      fontWeight: 500,
+      fontWeight: 600,
     },
     body2: {
-      fontWeight: 700,
-      fontSize: 14,
+      fontWeight: 840,
+      fontSize: 17,
       color: palette.grey[500],
     },
     body3: {
       fontWeight: 400,
       letterSpacing: 0.5,
-      fontSize: 14,
+      fontSize: 17,
       lineHeight: 1.5,
       color: palette.grey[600],
     },
     body4: {
-      fontWeight: 400,
-      fontSize: 12,
+      fontWeight: 480,
+      fontSize: 15,
     },
     body5: {
-      fontWeight: 400,
-      fontSize: 10,
+      fontWeight: 480,
+      fontSize: 12,
     },
     button: {
-      fontWeight: 500,
+      fontWeight: 600,
     },
     subtitle2: {
-      fontSize: '20px',
-      fontWeight: 400,
+      fontSize: '24px',
+      fontWeight: 480,
       color: palette.grey[500],
     },
   },
@@ -129,12 +145,12 @@ export const theme = createTheme({
       'linear-gradient(68.04deg, #62A3FF 14.57%, #3FBAFD 41.33%, #38CCE8 72.19%, #7AEBEF 96.47%, #FFFFFF 112.54%)',
   },
   shape: {
-    borderRadius: 11,
+    borderRadius: 13,
   },
   borders: {
-    light: '1px solid #EAEAEA',
+    light: '1.2px solid #EAEAEA',
   },
-  boxShadow: '0px 35px 84px 3px rgba(0, 0, 0, 0.04)',
+  boxShadow: '0px 42px 101px 3.6px rgba(0, 0, 0, 0.04)',
 })
 
 export type { Theme } from '@mui/material'

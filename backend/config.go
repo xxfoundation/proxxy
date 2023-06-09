@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 
 	jww "github.com/spf13/jwalterweatherman"
 )
@@ -47,12 +48,19 @@ func DefaultConfig(appname string) Config {
 		}
 	}
 	// Get resources path
-	ex, err := os.Executable()
-	if err != nil {
-		fmt.Printf("Error getting current path: %s\n", err)
-		panic(1)
+	var resources string
+	// If not on windows, resources are in the executable
+	if runtime.GOOS != "windows" {
+		ex, err := os.Executable()
+		if err != nil {
+			fmt.Printf("Error getting current path: %s\n", err)
+			panic(1)
+		}
+		resources = path.Join(filepath.Dir(ex), "resources")
+	} else {
+		// On windows, resources are in user config dir
+		resources = path.Join(datadir, "resources")
 	}
-	resources := path.Join(filepath.Dir(ex), "resources")
 	return Config{
 		DataDir:   datadir,
 		LogPrefix: "RELAY",

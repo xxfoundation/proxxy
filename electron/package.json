@@ -51,8 +51,8 @@
     "webpack-dev-server": "^4.11.1"
   },
   "build": {
-    "productName": "xx network Proxxy",
-    "appId": "org.erb.xxnetworkProxxy",
+    "productName": "Proxxy",
+    "appId": "org.erb.Proxxy",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

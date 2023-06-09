@@ -15,11 +15,11 @@ type Props = WithChildren & {
 };
 
 const sizes: Record<Size, string> = {
-  xs: '1rem',
-  sm: '2rem',
-  sm2: '4rem',
-  md: '6rem',
-  lg: '9rem'
+  xs: '1.2rem',
+  sm: '2.4rem',
+  sm2: '4.8rem',
+  md: '7.2rem',
+  lg: '10.8rem'
 }
 
 const svg = ({ className }: { className?: string }) => (

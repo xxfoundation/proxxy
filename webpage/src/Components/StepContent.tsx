@@ -63,7 +63,14 @@ export const StepContent = ({ step, maxSteps, next, back }: Props) => {
           justifyContent={'space-between'}
           minWidth={'100%'}
         >
-          <Button variant={'outlined'} onClick={goBack} disabled={step === 0}>
+          <Button
+            variant={'outlined'}
+            onClick={goBack}
+            disabled={step === 0}
+            sx={{
+              padding: '0.45rem 1.2rem',
+            }}
+          >
             <Typography
               variant='body3'
               sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
@@ -78,6 +85,9 @@ export const StepContent = ({ step, maxSteps, next, back }: Props) => {
               step === maxSteps - 1 ||
               nextButtonDisable(step, connecting, walletConnected)
             }
+            sx={{
+              padding: '0.45rem 1.2rem',
+            }}
           >
             <Typography
               variant='body3'
@@ -92,7 +102,7 @@ export const StepContent = ({ step, maxSteps, next, back }: Props) => {
           <Button variant={'outlined'} onClick={restart} disabled={step === 0}>
             <Typography
               variant='body3'
-              sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}
+              sx={{ color: theme.palette.text.primary, fontWeight: 'bold', padding: '0.45rem 1.2rem' }}
             >
               Restart
             </Typography>

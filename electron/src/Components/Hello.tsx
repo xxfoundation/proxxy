@@ -1,6 +1,6 @@
 import { Box, Container, Stack } from '@mui/material'
 import icon from '../assets/icon.svg'
-import { ConnectCmix } from '../Steps/ConnectCmix'
+import { ConnectCmix } from './ConnectCmix'
 
 declare global {
   var astilectron: any

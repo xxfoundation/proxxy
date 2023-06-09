@@ -9,8 +9,8 @@ function App() {
     <div className='App'>
       <Container
         sx={{
-          maxWidth: '800px',
-          maxHeight: '1600px',
+          maxWidth: '960px',
+          maxHeight: '1920px',
         }}
       >
         <Box margin={1}>

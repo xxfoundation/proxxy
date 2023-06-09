@@ -1,6 +1,5 @@
-import { Alert, Button, Typography } from '@mui/material'
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
-import Web3 from 'web3'
+import { Alert, Typography } from '@mui/material'
+import { useState, useEffect, useCallback } from 'react'
 import { SquaredButtonContainer } from '../Utils/utils'
 
 interface Props {
