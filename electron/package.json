@@ -1,6 +1,6 @@
 {
   "name": "proxxy-app",
-  "description": "xx network Proxxy",
+  "description": "Proxxy",
   "private": true,
   "version": "0.0.0",
   "main": "./src/main/main.ts",

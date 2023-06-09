@@ -8,7 +8,7 @@ const fileUrl =
 const wikiPageUrl = `https://xxnetwork.wiki/Proxxy`
 
 const wikiInfo =
-  'Read the Proxxy Wiki Page and download the xx network Proxxy app to your computer. This will allow you to connect to cMix and use the Proxxy privacy protection service.'
+  'Read the Proxxy Wiki Page and download the Proxxy app to your computer. This will allow you to connect to cMix and use the Proxxy privacy protection service.'
 
 export const WikiPage = () => {
   const [error, setError] = React.useState(false)
