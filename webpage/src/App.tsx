@@ -1,7 +1,8 @@
-import { Box, Container } from '@mui/material'
+import { Box, Container, Stack, Typography } from '@mui/material'
 import './App.css'
 import { Hello } from './Components/Hello'
-import icon from './assets/icon.svg'
+import proxxy_logo from './assets/proxxy_logo.png'
+import madeBy from './assets/madeBy.png'
 
 function App() {
   return (
@@ -12,10 +13,13 @@ function App() {
           maxHeight: '1920px',
         }}
       >
-        <Box margin={2}>
-          <img width='240' alt='icon' src={icon} />
+        <Box margin={1}>
+          <img width='200' alt='logo' src={proxxy_logo} />
         </Box>
         <Hello />
+        <Box>
+          <img width='200' alt='madeBy' src={madeBy} />
+        </Box>
       </Container>
     </div>
   )
