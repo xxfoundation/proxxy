@@ -5,7 +5,7 @@ import { SquaredButtonContainer } from '../Utils/utils'
 const fileUrl =
   'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
 
-const wikiPageUrl = `https://xxnetwork.wiki/Proxxy`
+const wikiPageUrl = `https://learn.xx.network/dapps/proxxy`
 
 const wikiInfo =
   'Read the Proxxy Wiki Page and download the Proxxy app to your computer. This will allow you to connect to cMix and use the Proxxy privacy protection service.'
