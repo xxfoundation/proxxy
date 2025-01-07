@@ -9,3 +9,5 @@ windows.syso
 **/release/build
 **/.erb/dll
 resources/app
+# Local Netlify folder
+.netlify
